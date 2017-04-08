@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>1663aefe-dd23-42dd-9c79-d46119b5c1ec</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Ebay2magento.Client</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Ebay\IEbayClientService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Magento\IMagentoClientService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Ebay\ITurboListerClientService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\ApplicationTokenData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\EbayItemData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\MagentoCategoryData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\TokenData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\UserTokenData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Ebay\EbayClientService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Ebay\TurboListerClientService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Magento\MagentoClientService.cs" />
+  </ItemGroup>
+</Project>

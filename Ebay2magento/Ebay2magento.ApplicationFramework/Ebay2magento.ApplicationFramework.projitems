@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>b27861a0-f139-44d8-80ce-bbb149301def</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Ebay2magento.ApplicationFramework</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\IQueryService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ISettingsService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ErrorHandling\Ebay2MagentoException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DisposableExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\FuncExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\HttpResponseMessageExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\UnityContainerExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RangeEnabledObservableCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\QueryService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\SettingsService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Commands\" />
+  </ItemGroup>
+</Project>

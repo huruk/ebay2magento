@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:local="using:Ebay2Magento.Views.Styles.Application">
+	<Color x:Key="Color01">#AE973B</Color>
+
+	<SolidColorBrush x:Key="Brush01"
+					 Color="{StaticResource Color01}" />
+</ResourceDictionary>
