@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Ebay2Magento.ApplicationFramework.Services
 {
@@ -9,9 +10,26 @@ namespace Ebay2Magento.ApplicationFramework.Services
 	{
 		private Dictionary<string, object> _localSettings;
 
+		private static string Path =
+			System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "ebay2magento", "settings.json");
+
 		public SettingsService()
 		{
-			_localSettings = new Dictionary<string, object>();
+			if (Directory.Exists(Path))
+			{
+				var settings = File.ReadAllText(Path);
+				_localSettings = JsonConvert.DeserializeObject<Dictionary<string, object>>(settings);
+			}
+			else
+			{
+				_localSettings = new Dictionary<string, object>();
+			}
+		}
+
+		public void Save()
+		{
+			var settings = JsonConvert.SerializeObject(_localSettings);
+			File.WriteAllText(Path, settings);
 		}
 
 		public bool TryGetValue<T>(string key, out T value)

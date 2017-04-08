@@ -1,9 +1,12 @@
 ﻿<Application x:Class="Ebay2Magento.Classic.App"
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 StartupUri="MainWindow.xaml">
+			 xmlns:vm="clr-namespace:Ebay2Magento.Presentation"
+			 StartupUri="Content/Shell.xaml">
 	<Application.Resources>
 		<ResourceDictionary>
+			<vm:ViewModelLocator x:Key="Locator" />
+
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Styles\Application\Application.xaml" />
 			</ResourceDictionary.MergedDictionaries>

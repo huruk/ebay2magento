@@ -15,10 +15,5 @@ namespace Ebay2Magento.Classic
 			_container = new UnityContainer();
 			Module.Bootstrap(_container);
 		}
-
-		protected override void OnStartup(StartupEventArgs e)
-		{
-			base.OnStartup(e);
-		}
 	}
 }

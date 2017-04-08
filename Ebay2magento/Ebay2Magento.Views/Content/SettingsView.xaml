@@ -1,13 +1,11 @@
-﻿<Page x:Class="Ebay2Magento.Views.Content.Settings"
-	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	  mc:Ignorable="d"
-	  DataContext="{Binding Settings, Source={StaticResource Locator}}"
-	  Background="White">
+﻿<UserControl x:Class="Ebay2Magento.Views.Content.SettingsView"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 mc:Ignorable="d">
 
-	<Page.Resources>
+	<UserControl.Resources>
 		<Style x:Key="SettingsTextBlockStyle"
 			   TargetType="TextBlock">
 			<Setter Property="Margin"
@@ -37,9 +35,9 @@
 			<Setter Property="Margin"
 					Value="5,15" />
 		</Style>
-	</Page.Resources>
+	</UserControl.Resources>
 
-	<StackPanel>
+	<StackPanel DataContext="{Binding Settings, Source={StaticResource Locator}}">
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
@@ -70,11 +68,11 @@
 
 			<TextBox Grid.Column="1"
 					 Style="{StaticResource SettingsTextBoxkStyle}"
-					 Text="{Binding AppID, Mode=TwoWay}"/>
+					 Text="{Binding AppID, Mode=TwoWay}" />
 			<TextBox Grid.Column="1"
 					 Grid.Row="1"
 					 Style="{StaticResource SettingsTextBoxkStyle}"
-					 Text="{Binding CertID, Mode=TwoWay}"/>
+					 Text="{Binding CertID, Mode=TwoWay}" />
 			<TextBox Grid.Column="1"
 					 Grid.Row="2"
 					 Style="{StaticResource SettingsTextBoxkStyle}"
@@ -184,4 +182,4 @@
 			</StackPanel>
 		</Grid>
 	</StackPanel>
-</Page>
+</UserControl>
