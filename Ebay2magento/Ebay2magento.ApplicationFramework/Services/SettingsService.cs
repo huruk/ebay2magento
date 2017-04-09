@@ -15,7 +15,7 @@ namespace Ebay2Magento.ApplicationFramework.Services
 
 		public SettingsService()
 		{
-			if (Directory.Exists(Path))
+			if (File.Exists(Path))
 			{
 				var settings = File.ReadAllText(Path);
 				_localSettings = JsonConvert.DeserializeObject<Dictionary<string, object>>(settings);
@@ -29,7 +29,10 @@ namespace Ebay2Magento.ApplicationFramework.Services
 		public void Save()
 		{
 			var settings = JsonConvert.SerializeObject(_localSettings);
-			File.WriteAllText(Path, settings);
+			var file = new FileInfo(Path);
+			file.Directory.Create();
+
+			File.WriteAllText(file.FullName, settings);
 		}
 
 		public bool TryGetValue<T>(string key, out T value)

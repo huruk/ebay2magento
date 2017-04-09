@@ -12,9 +12,7 @@
 					  mc:Ignorable="d"
 					  Title="MainWindow"
 					  WindowTransitionsEnabled="False"
-					  WindowStartupLocation="CenterScreen"
-					  Height="350"
-					  Width="525">
+					  WindowStartupLocation="CenterScreen">
 
 	<controls:MetroWindow.LeftWindowCommands>
 		<controls:WindowCommands>

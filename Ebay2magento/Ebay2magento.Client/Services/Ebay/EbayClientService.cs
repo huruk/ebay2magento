@@ -1,14 +1,14 @@
 ﻿using ApplicationFramework;
-using ApplicationFramework.Extensions;
 using Ebay2Magento.ApplicationFramework.Contracts;
 using Ebay2Magento.Client.Contracts.Ebay;
-using Ebay2Magento.Client.Entities;
 using System;
-using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Ebay2Magento.Client.Services.Ebay
 {
@@ -31,69 +31,47 @@ namespace Ebay2Magento.Client.Services.Ebay
 			_base64Auth = Convert.ToBase64String(auth);
 		}
 
-		public async Task<ApplicationTokenData> GetApplicationToken(CancellationToken ct, string ruName)
+		public async Task<string> GetSessionId(CancellationToken ct, string runame, string devId, string appid, string certId)
 		{
-			var parameters = new KeyValuePair<string, string>[]
-			{
-				new KeyValuePair<string, string>("grant_type", "client_credentials"),
-				new KeyValuePair<string, string>("redirect_uri", ruName),
-				new KeyValuePair<string, string>("scope", "https://api.ebay.com/oauth/api_scope")
-			};
+			var xmlDoc = new XmlDocument();
 
-			return await _queryService()
-				.Header("Authorization", "Basic " + _base64Auth)
-				.Post(ct, Constants.Ebay.Url, new FormUrlEncodedContent(parameters))
-				.ToEntity<ApplicationTokenData>(ct);
-		}
+			string strReq = @"<?xml version=""1.0"" encoding=""utf-8""?>
+                        <GetSessionIDRequest xmlns=""urn:ebay:apis:eBLBaseComponents"">
+                          <RuName>" + runame + @"</RuName>
+                        </GetSessionIDRequest>";
 
-		public async Task<UserTokenData> GetUserToken(CancellationToken ct, string ruName)
-		{
-			//await Launcher.LaunchUriAsync(new Uri(Constants.Ebay.SignInUrl));
+			var httpContent = new StringContent(strReq, Encoding.UTF8, "text/xml");
 
-			var authCode = await GetAuthorizationCode(ct);
-
-			var parameters = new KeyValuePair<string, string>[]
-			{
-				new KeyValuePair<string, string>("grant_type", "authorization_code"),
-				new KeyValuePair<string, string>("redirect_uri", ruName),
-				new KeyValuePair<string, string>("code", authCode)
-			};
-
-			var token = await _queryService()
-				.Header("Authorization", "Basic " + _base64Auth)
-				.Post(ct, Constants.Ebay.Url, new FormUrlEncodedContent(parameters))
-				.ToEntity<UserTokenData>(ct);
-
-			return token;
-		}
-
-		public async Task<UserTokenData> RefreshUserToken(CancellationToken ct, UserTokenData currentToken)
-		{
-			var parameters = new KeyValuePair<string, string>[]
-			{
-				new KeyValuePair<string, string>("grant_type", "refresh_token"),
-				new KeyValuePair<string, string>("refresh_token", currentToken.RefreshToken)
-			};
-
-			return await _queryService()
-				.Header("Authorization", "Basic " + _base64Auth)
-				.Post(ct, Constants.Ebay.Url, new FormUrlEncodedContent(parameters))
-				.ToEntity<UserTokenData>(ct);
-		}
-
-		private async Task<string> GetAuthorizationCode(CancellationToken ct)
-		{
 			var response = await _queryService()
-				.Get(ct, Constants.Local.RetrieveUrl);
+				.Header("X-EBAY-API-DEV-NAME", devId)
+				.Header("X-EBAY-API-APP-NAME", appid)
+				.Header("X-EBAY-API-CERT-NAME", certId)
+				.Header("X-EBAY-API-COMPATIBILITY-LEVEL", "679")
+				.Header("X-EBAY-API-SITEID", "0")
+				.Header("X-EBAY-API-CALL-NAME", "GetSessionID")
+				.Post(ct, Constants.Ebay.ApiUrl, httpContent);
 
-			return await response.Content.ReadAsStringAsync();
-		}
+			var stream = await response.Content.ReadAsStreamAsync();
 
-		public async Task GetInventory(CancellationToken ct, UserTokenData userToken, int limit, int offset)
-		{
-			var req = await _queryService()
-				.Header("Authorization", "Bearer " + userToken.AccessToken)
-				.Get(ct, string.Format(Constants.Ebay.Inventory, limit, offset));
+			using (var sr = new StreamReader(stream))
+			{
+				xmlDoc.LoadXml(sr.ReadToEnd());
+			}
+
+			var ns = new XmlNamespaceManager(xmlDoc.NameTable);
+			ns.AddNamespace("ebay", "urn:ebay:apis:eBLBaseComponents");
+
+			var root = xmlDoc["GetSessionIDResponse"];
+
+			var sessionNode = root.SelectSingleNode("//ebay:SessionID", ns);
+
+			var sessionID = string.Empty;
+			if (sessionNode != null)
+			{
+				sessionID = root["SessionID"].InnerText;
+			}
+
+			return sessionID;
 		}
 	}
 }

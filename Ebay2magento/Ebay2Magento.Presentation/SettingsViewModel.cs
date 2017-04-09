@@ -3,6 +3,7 @@ using Ebay2Magento.ApplicationFramework.Contracts;
 using Ebay2Magento.Business.Contracts;
 using Ebay2Magento.Client.Entities;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -31,6 +32,12 @@ namespace Ebay2Magento.Presentation
 		{
 			get { return GetValue(() => RuName); }
 			set { SetValue(() => RuName, value); }
+		}
+
+		public string DevID
+		{
+			get { return GetValue(() => DevID); }
+			set { SetValue(() => DevID, value); }
 		}
 
 		public UserTokenData UserToken
@@ -63,6 +70,7 @@ namespace Ebay2Magento.Presentation
 			AppID = _settingsService().GetValue<string>(Constants.Settings.AppID);
 			CertID = _settingsService().GetValue<string>(Constants.Settings.CertID);
 			RuName = _settingsService().GetValue<string>(Constants.Settings.RuName);
+			DevID = _settingsService().GetValue<string>(Constants.Settings.DevID);
 
 			UserToken = _settingsService().GetValue<UserTokenData>(Constants.Settings.UserToken);
 			ApplicationToken = _settingsService().GetValue<ApplicationTokenData>(Constants.Settings.ApplicationToken);
@@ -85,8 +93,8 @@ namespace Ebay2Magento.Presentation
 			{
 				return new RelayCommand(async () =>
 				{
-					var token = await Task.Run(() => _ebayService().GetUserToken(CancellationToken));
-					UserToken = token;
+					var sessionId = await Task.Run(() => _ebayService().GetSessionId(CancellationToken));
+					Messenger.Default.Send(new NotificationMessage("ShowWebView"));
 				});
 			}
 		}
@@ -97,8 +105,6 @@ namespace Ebay2Magento.Presentation
 			{
 				return new RelayCommand(async () =>
 				{
-					var token = await Task.Run(() => _ebayService().GetApplicationToken(CancellationToken));
-					ApplicationToken = token;
 				});
 			}
 		}
@@ -108,6 +114,7 @@ namespace Ebay2Magento.Presentation
 			_settingsService().SetValue(Constants.Settings.AppID, AppID);
 			_settingsService().SetValue(Constants.Settings.CertID, CertID);
 			_settingsService().SetValue(Constants.Settings.RuName, RuName);
+			_settingsService().SetValue(Constants.Settings.DevID, DevID);
 		}
 	}
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.Practices.Unity;
+﻿using ApplicationFramework.Extensions;
+using Ebay2Magento.ApplicationFramework.Contracts;
+using Microsoft.Practices.Unity;
 using System.Windows;
 
 namespace Ebay2Magento.Classic
@@ -14,6 +16,13 @@ namespace Ebay2Magento.Classic
 		{
 			_container = new UnityContainer();
 			Module.Bootstrap(_container);
+		}
+
+		protected override void OnExit(ExitEventArgs e)
+		{
+			var settingsService = _container.ResolveLazy<ISettingsService>();
+			settingsService.Save();
+			base.OnExit(e);
 		}
 	}
 }

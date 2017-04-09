@@ -34,25 +34,9 @@ namespace Ebay2Magento.ApplicationFramework.Services
 			return await _client.GetAsync(requestUri, HttpCompletionOption.ResponseContentRead, ct);
 		}
 
-		//public async Task<Windows.Web.Http.HttpResponseMessage> UnsecureGet(CancellationToken ct, string requestUri)
-		//{
-		//	var filter = new HttpBaseProtocolFilter();
-
-		//	filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.Untrusted);
-		//	filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.IncompleteChain);
-		//	filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.InvalidName);
-
-		//	using (var webClient = new Windows.Web.Http.HttpClient(filter))
-		//	{
-		//		webClient.DefaultRequestHeaders.Accept.Add(new Windows.Web.Http.Headers.HttpMediaTypeWithQualityHeaderValue("application/json"));
-
-		//		return await webClient.GetAsync(new Uri(requestUri));
-		//	}
-		//}
-
-		public Task<HttpResponseMessage> Post(CancellationToken ct, string requestUri, HttpContent content)
+		public async Task<HttpResponseMessage> Post(CancellationToken ct, string requestUri, HttpContent content)
 		{
-			return _client.PostAsync(requestUri, content, ct);
+			return await _client.PostAsync(requestUri, content, ct);
 		}
 	}
 }

@@ -6,11 +6,7 @@ namespace Ebay2Magento.Business.Contracts
 {
 	public interface IEbayService
 	{
-		Task<UserTokenData> GetUserToken(CancellationToken ct);
-
-		Task<ApplicationTokenData> GetApplicationToken(CancellationToken ct);
-
-		Task GetInventory(CancellationToken ct);
+		Task<string> GetSessionId(CancellationToken ct);
 
 		//Task GetTurbolisterItems(CancellationToken ct, StorageFile file);
 	}

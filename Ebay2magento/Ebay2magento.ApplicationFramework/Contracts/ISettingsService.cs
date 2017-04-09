@@ -13,5 +13,7 @@ namespace Ebay2Magento.ApplicationFramework.Contracts
 		T GetValue<T>(string key, Func<T> defaultFactory = null);
 
 		void RemoveValue(string key);
+
+		void Save();
 	}
 }

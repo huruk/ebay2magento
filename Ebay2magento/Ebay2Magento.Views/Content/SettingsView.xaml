@@ -3,7 +3,8 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 mc:Ignorable="d">
+			 mc:Ignorable="d"
+			 DataContext="{Binding Settings, Source={StaticResource Locator}}">
 
 	<UserControl.Resources>
 		<Style x:Key="SettingsTextBlockStyle"
@@ -37,9 +38,10 @@
 		</Style>
 	</UserControl.Resources>
 
-	<StackPanel DataContext="{Binding Settings, Source={StaticResource Locator}}">
+	<StackPanel>
 		<Grid>
 			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
@@ -59,12 +61,15 @@
 			<TextBlock Text="RuName"
 					   Style="{StaticResource SettingsTextBlockStyle}"
 					   Grid.Row="2" />
-			<TextBlock Text="Application token"
+			<TextBlock Text="DevId"
 					   Style="{StaticResource SettingsTextBlockStyle}"
 					   Grid.Row="3" />
-			<TextBlock Text="User token"
+			<TextBlock Text="Application token"
 					   Style="{StaticResource SettingsTextBlockStyle}"
 					   Grid.Row="4" />
+			<TextBlock Text="User token"
+					   Style="{StaticResource SettingsTextBlockStyle}"
+					   Grid.Row="5" />
 
 			<TextBox Grid.Column="1"
 					 Style="{StaticResource SettingsTextBoxkStyle}"
@@ -77,8 +82,12 @@
 					 Grid.Row="2"
 					 Style="{StaticResource SettingsTextBoxkStyle}"
 					 Text="{Binding RuName, Mode=TwoWay}" />
+			<TextBox Grid.Column="1"
+					 Grid.Row="3"
+					 Style="{StaticResource SettingsTextBoxkStyle}"
+					 Text="{Binding DevID, Mode=TwoWay}" />
 
-			<Grid Grid.Row="3"
+			<Grid Grid.Row="4"
 				  Grid.Column="1"
 				  Style="{StaticResource SettingsInnerGridStyle}">
 				<Grid.RowDefinitions>
@@ -114,7 +123,7 @@
 			</Grid>
 
 
-			<Grid Grid.Row="4"
+			<Grid Grid.Row="5"
 				  Grid.Column="1"
 				  Style="{StaticResource SettingsInnerGridStyle}">
 				<Grid.RowDefinitions>
@@ -167,7 +176,7 @@
 			</Grid>
 
 			<StackPanel Orientation="Horizontal"
-						Grid.Row="5"
+						Grid.Row="6"
 						Grid.Column="1"
 						HorizontalAlignment="Left">
 				<Button Content="Get user token"

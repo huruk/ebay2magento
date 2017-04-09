@@ -11,8 +11,6 @@ namespace Ebay2Magento.ApplicationFramework.Contracts
 
 		Task<HttpResponseMessage> Get(CancellationToken ct, string requestUri);
 
-		//Task<Windows.Web.Http.HttpResponseMessage> UnsecureGet(CancellationToken ct, string requestUri);
-
 		Task<HttpResponseMessage> Post(CancellationToken ct, string requestUri, HttpContent content);
 	}
 }

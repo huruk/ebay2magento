@@ -26,45 +26,14 @@ namespace Ebay2Magento.Business.Services
 			_turbolisterService = turbolisterService;
 		}
 
-		public async Task<ApplicationTokenData> GetApplicationToken(CancellationToken ct)
+		public async Task<string> GetSessionId(CancellationToken ct)
 		{
-			var currentToken = _settingsService().GetValue<ApplicationTokenData>(Constants.Settings.ApplicationToken);
+			var ruName = _settingsService().GetValue<string>(Constants.Settings.RuName);
+			var devId = _settingsService().GetValue<string>(Constants.Settings.DevID);
+			var certId = _settingsService().GetValue<string>(Constants.Settings.CertID);
+			var appId = _settingsService().GetValue<string>(Constants.Settings.AppID);
 
-			if (currentToken == null || currentToken?.AccessToken == null)
-			{
-				var ruName = _settingsService().GetValue<string>(Constants.Settings.RuName);
-
-				var token = await _ebayService().GetApplicationToken(ct, ruName);
-				_settingsService().SetValue(Constants.Settings.ApplicationToken, token);
-
-				return token;
-			}
-
-			return currentToken;
-		}
-
-		public async Task<UserTokenData> GetUserToken(CancellationToken ct)
-		{
-			var currentToken = _settingsService().GetValue<UserTokenData>(Constants.Settings.UserToken);
-
-			if (currentToken == null)
-			{
-				var ruName = _settingsService().GetValue<string>(Constants.Settings.RuName);
-
-				var token = await _ebayService().GetUserToken(ct, ruName);
-				_settingsService().SetValue(Constants.Settings.UserToken, token);
-
-				return token;
-			}
-
-			return currentToken;
-		}
-
-		public async Task GetInventory(CancellationToken ct)
-		{
-			var currentToken = _settingsService().GetValue<UserTokenData>(Constants.Settings.UserToken);
-
-			await _ebayService().GetInventory(ct, currentToken, 50, 0);
+			return await _ebayService().GetSessionId(ct, ruName, devId, appId, certId);
 		}
 
 		//public async Task GetTurbolisterItems(CancellationToken ct, StorageFile file)
