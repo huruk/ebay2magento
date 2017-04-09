@@ -36,9 +36,18 @@ namespace Ebay2Magento.Business.Services
 			return await _ebayService().GetSessionId(ct, ruName, devId, appId, certId);
 		}
 
-		//public async Task GetTurbolisterItems(CancellationToken ct, StorageFile file)
-		//{
-		//	await _turbolisterService().ReadFile(ct, file);
-		//}
+		public async Task<UserTokenData> GetUserToken(CancellationToken ct, string sessionId)
+		{
+			var ruName = _settingsService().GetValue<string>(Constants.Settings.RuName);
+			var devId = _settingsService().GetValue<string>(Constants.Settings.DevID);
+			var certId = _settingsService().GetValue<string>(Constants.Settings.CertID);
+			var appId = _settingsService().GetValue<string>(Constants.Settings.AppID);
+
+			var userToken = await _ebayService().GetUserToken(ct, ruName, devId, appId, certId, sessionId);
+
+			_settingsService().SetValue(Constants.Settings.UserToken, userToken);
+
+			return userToken;
+		}
 	}
 }

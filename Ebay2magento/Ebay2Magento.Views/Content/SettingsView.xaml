@@ -154,25 +154,6 @@
 						 Grid.Row="1"
 						 Grid.Column="1"
 						 IsEnabled="False" />
-				<TextBlock Text="Refresh token"
-						   Style="{StaticResource SettingsTextBlockStyle}"
-						   Grid.Row="2"
-						   Grid.Column="0" />
-				<TextBox Text="{Binding UserToken.RefreshToken}"
-						 Style="{StaticResource SettingsTextBoxkStyle}"
-						 Grid.Row="2"
-						 Grid.Column="1"
-						 IsEnabled="False" />
-
-				<TextBlock Text="Expires in"
-						   Style="{StaticResource SettingsTextBlockStyle}"
-						   Grid.Row="3"
-						   Grid.Column="0" />
-				<TextBox Text="{Binding UserToken.RefreshTokenExpiresIn}"
-						 Style="{StaticResource SettingsTextBoxkStyle}"
-						 Grid.Row="3"
-						 Grid.Column="1"
-						 IsEnabled="False" />
 			</Grid>
 
 			<StackPanel Orientation="Horizontal"

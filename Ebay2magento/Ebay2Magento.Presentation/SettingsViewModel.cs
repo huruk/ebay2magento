@@ -1,4 +1,5 @@
 ﻿using ApplicationFramework;
+using Ebay2magento.ApplicationFramework.Entities;
 using Ebay2Magento.ApplicationFramework.Contracts;
 using Ebay2Magento.Business.Contracts;
 using Ebay2Magento.Client.Entities;
@@ -94,7 +95,15 @@ namespace Ebay2Magento.Presentation
 				return new RelayCommand(async () =>
 				{
 					var sessionId = await Task.Run(() => _ebayService().GetSessionId(CancellationToken));
-					Messenger.Default.Send(new NotificationMessage("ShowWebView"));
+					Messenger.Default.Send(new EbayNotificationMessage(
+						"ShowWebView",
+						new Uri(Constants.Ebay.SignInUrl + RuName + "&SessID=" + Uri.EscapeDataString(sessionId)),
+						async () =>
+						{
+							var userToken = await Task.Run(() => _ebayService().GetUserToken(CancellationToken, sessionId));
+							UserToken = userToken;
+						}
+					));
 				});
 			}
 		}

@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\IQueryService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ISettingsService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\EbayNotificationMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ErrorHandling\Ebay2MagentoException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\DisposableExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FuncExtensions.cs" />

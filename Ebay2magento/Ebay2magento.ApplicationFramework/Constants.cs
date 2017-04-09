@@ -15,7 +15,7 @@
 		public static class Ebay
 		{
 			public const string ApiUrl = "https://api.ebay.com/ws/api.dll";
-			public const string SignInUrl = "https://signin.ebay.com/ws/eBayISAPI.dll?SignIn&amp;runame=";
+			public const string SignInUrl = "https://signin.ebay.com/ws/eBayISAPI.dll?SignIn&runame=";
 		}
 
 		public static class Magento

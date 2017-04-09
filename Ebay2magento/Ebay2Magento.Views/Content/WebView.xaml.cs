@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using System;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -12,6 +13,11 @@ namespace Ebay2Magento.Views.Content
 		public WebView()
 		{
 			this.InitializeComponent();
+		}
+
+		public void Navigate(Uri url)
+		{
+			this.Browser.Navigate(url);
 		}
 	}
 }

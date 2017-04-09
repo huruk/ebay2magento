@@ -8,6 +8,6 @@ namespace Ebay2Magento.Business.Contracts
 	{
 		Task<string> GetSessionId(CancellationToken ct);
 
-		//Task GetTurbolisterItems(CancellationToken ct, StorageFile file);
+		Task<UserTokenData> GetUserToken(CancellationToken ct, string sessionId);
 	}
 }
