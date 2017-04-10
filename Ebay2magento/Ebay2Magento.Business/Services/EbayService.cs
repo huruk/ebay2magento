@@ -1,4 +1,5 @@
 ﻿using ApplicationFramework;
+using Ebay2magento.ApplicationFramework.Entities;
 using Ebay2magento.Client.Contracts.Ebay;
 using Ebay2Magento.ApplicationFramework.Contracts;
 using Ebay2Magento.Business.Contracts;
@@ -48,6 +49,26 @@ namespace Ebay2Magento.Business.Services
 			_settingsService().SetValue(Constants.Settings.UserToken, userToken);
 
 			return userToken;
+		}
+
+		public async Task GetInventory(CancellationToken ct)
+		{
+			var ruName = _settingsService().GetValue<string>(Constants.Settings.RuName);
+			var devId = _settingsService().GetValue<string>(Constants.Settings.DevID);
+			var certId = _settingsService().GetValue<string>(Constants.Settings.CertID);
+			var appId = _settingsService().GetValue<string>(Constants.Settings.AppID);
+			var userToken = _settingsService().GetValue<UserTokenData>(Constants.Settings.UserToken);
+
+			var context = new EbayContext()
+			{
+				AppId = _settingsService().GetValue<string>(Constants.Settings.AppID),
+				CertId = _settingsService().GetValue<string>(Constants.Settings.CertID),
+				DevID = _settingsService().GetValue<string>(Constants.Settings.DevID),
+				RuName = _settingsService().GetValue<string>(Constants.Settings.RuName),
+				Token = userToken.AccessToken
+			};
+
+			await _ebayService().GetInventory(ct, context);
 		}
 	}
 }

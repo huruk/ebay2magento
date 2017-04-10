@@ -14,11 +14,5 @@ namespace Ebay2Magento.Views.Content
 		{
 			this.InitializeComponent();
 		}
-
-		private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-		{
-			HamburgerMenuControl.SelectedIndex = -1;
-			HamburgerMenuControl.SelectedOptionsIndex = -1;
-		}
 	}
 }

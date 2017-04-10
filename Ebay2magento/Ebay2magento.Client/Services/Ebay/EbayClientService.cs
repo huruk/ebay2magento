@@ -1,4 +1,8 @@
 ﻿using ApplicationFramework;
+using eBay.Service.Call;
+using eBay.Service.Core.Sdk;
+using eBay.Service.Core.Soap;
+using Ebay2magento.ApplicationFramework.Entities;
 using Ebay2Magento.ApplicationFramework.Contracts;
 using Ebay2Magento.Client.Contracts.Ebay;
 using Ebay2Magento.Client.Entities;
@@ -51,11 +55,12 @@ namespace Ebay2Magento.Client.Services.Ebay
 				.Header("X-EBAY-API-CALL-NAME", "GetSessionID")
 				.Post(ct, Constants.Ebay.ApiUrl, httpContent);
 
-			var stream = await response.Content.ReadAsStreamAsync();
-
-			using (var sr = new StreamReader(stream))
+			using (var stream = await response.Content.ReadAsStreamAsync())
 			{
-				xmlDoc.LoadXml(sr.ReadToEnd());
+				using (var sr = new StreamReader(stream))
+				{
+					xmlDoc.LoadXml(sr.ReadToEnd());
+				}
 			}
 
 			var ns = new XmlNamespaceManager(xmlDoc.NameTable);
@@ -94,11 +99,12 @@ namespace Ebay2Magento.Client.Services.Ebay
 				.Header("X-EBAY-API-CALL-NAME", "FetchToken")
 				.Post(ct, Constants.Ebay.ApiUrl, httpContent);
 
-			var stream = await response.Content.ReadAsStreamAsync();
-
-			using (var sr = new StreamReader(stream))
+			using (var stream = await response.Content.ReadAsStreamAsync())
 			{
-				xmlDoc.LoadXml(sr.ReadToEnd());
+				using (var sr = new StreamReader(stream))
+				{
+					xmlDoc.LoadXml(sr.ReadToEnd());
+				}
 			}
 
 			var root = xmlDoc["FetchTokenResponse"];
@@ -113,6 +119,36 @@ namespace Ebay2Magento.Client.Services.Ebay
 				AccessToken = root["eBayAuthToken"].InnerText,
 				ExpiresIn = root["HardExpirationTime"].InnerText
 			};
+		}
+
+		public async Task GetInventory(CancellationToken ct, EbayContext context)
+		{
+			var apiContext = new ApiContext()
+			{
+				ApiCredential = new ApiCredential()
+				{
+					ApiAccount = new ApiAccount()
+					{
+						Application = context.AppId,
+						Certificate = context.CertId,
+						Developer = context.DevID
+					},
+					eBayToken = context.Token
+				}
+			};
+
+			var call = new GetSellerListCall(apiContext);
+			call.DetailLevelList = new DetailLevelCodeTypeCollection(new DetailLevelCodeType[] { DetailLevelCodeType.ReturnAll });
+			call.EndTimeFrom = new DateTime(2017, 1, 1);
+			call.EndTimeTo = new DateTime(2017, 3, 1);
+			call.Pagination = new PaginationType()
+			{
+				EntriesPerPage = 200,
+				PageNumber = 1
+			};
+
+			await Task.Run(() => call.Execute());
+			var items = call.ItemList;
 		}
 	}
 }

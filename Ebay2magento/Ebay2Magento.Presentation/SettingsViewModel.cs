@@ -77,16 +77,7 @@ namespace Ebay2Magento.Presentation
 			ApplicationToken = _settingsService().GetValue<ApplicationTokenData>(Constants.Settings.ApplicationToken);
 		}
 
-		public ICommand Save
-		{
-			get
-			{
-				return new RelayCommand(() =>
-				{
-					SaveSettings();
-				});
-			}
-		}
+		public ICommand Save => new RelayCommand(() => SaveSettings());
 
 		public ICommand GetUserToken
 		{
@@ -104,22 +95,15 @@ namespace Ebay2Magento.Presentation
 							UserToken = userToken;
 						}
 					));
-				});
-			}
-		}
-
-		public ICommand GetApplicationToken
-		{
-			get
-			{
-				return new RelayCommand(async () =>
-				{
-				});
+				},
+				() => UserToken != null);
 			}
 		}
 
 		private void SaveSettings()
 		{
+			Task.Run(() => _ebayService().GetInventory(CancellationToken));
+
 			_settingsService().SetValue(Constants.Settings.AppID, AppID);
 			_settingsService().SetValue(Constants.Settings.CertID, CertID);
 			_settingsService().SetValue(Constants.Settings.RuName, RuName);

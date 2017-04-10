@@ -2,6 +2,7 @@
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:c="http://metro.mahapps.com/winfx/xaml/controls"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 mc:Ignorable="d"
 			 DataContext="{Binding Settings, Source={StaticResource Locator}}">
@@ -23,14 +24,6 @@
 					Value="5,15" />
 		</Style>
 
-		<Style x:Key="SettingsButtonStyle"
-			   TargetType="Button">
-			<Setter Property="Margin"
-					Value="5,15" />
-			<Setter Property="HorizontalAlignment"
-					Value="Stretch" />
-		</Style>
-
 		<Style x:Key="SettingsInnerGridStyle"
 			   TargetType="Grid">
 			<Setter Property="Margin"
@@ -38,59 +31,11 @@
 		</Style>
 	</UserControl.Resources>
 
-	<StackPanel>
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition />
-			</Grid.ColumnDefinitions>
-			<TextBlock Text="App ID (Client ID)"
-					   Style="{StaticResource SettingsTextBlockStyle}" />
-			<TextBlock Text="Cert ID (Client Secret)"
-					   Style="{StaticResource SettingsTextBlockStyle}"
-					   Grid.Row="1" />
-			<TextBlock Text="RuName"
-					   Style="{StaticResource SettingsTextBlockStyle}"
-					   Grid.Row="2" />
-			<TextBlock Text="DevId"
-					   Style="{StaticResource SettingsTextBlockStyle}"
-					   Grid.Row="3" />
-			<TextBlock Text="Application token"
-					   Style="{StaticResource SettingsTextBlockStyle}"
-					   Grid.Row="4" />
-			<TextBlock Text="User token"
-					   Style="{StaticResource SettingsTextBlockStyle}"
-					   Grid.Row="5" />
-
-			<TextBox Grid.Column="1"
-					 Style="{StaticResource SettingsTextBoxkStyle}"
-					 Text="{Binding AppID, Mode=TwoWay}" />
-			<TextBox Grid.Column="1"
-					 Grid.Row="1"
-					 Style="{StaticResource SettingsTextBoxkStyle}"
-					 Text="{Binding CertID, Mode=TwoWay}" />
-			<TextBox Grid.Column="1"
-					 Grid.Row="2"
-					 Style="{StaticResource SettingsTextBoxkStyle}"
-					 Text="{Binding RuName, Mode=TwoWay}" />
-			<TextBox Grid.Column="1"
-					 Grid.Row="3"
-					 Style="{StaticResource SettingsTextBoxkStyle}"
-					 Text="{Binding DevID, Mode=TwoWay}" />
-
-			<Grid Grid.Row="4"
-				  Grid.Column="1"
-				  Style="{StaticResource SettingsInnerGridStyle}">
+	<TabControl>
+		<TabItem Header="Ebay">
+			<Grid>
 				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
@@ -102,74 +47,122 @@
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
-				<TextBlock Text="Access token"
-						   Grid.Row="0"
-						   Grid.Column="0"
+				<TextBlock Text="App ID (Client ID)"
 						   Style="{StaticResource SettingsTextBlockStyle}" />
-				<TextBox Text="{Binding ApplicationToken.AccessToken}"
-						 Style="{StaticResource SettingsTextBoxkStyle}"
-						 Grid.Row="0"
-						 Grid.Column="1"
-						 IsEnabled="False" />
-				<TextBlock Text="Expires in"
+				<TextBlock Text="Cert ID (Client Secret)"
 						   Style="{StaticResource SettingsTextBlockStyle}"
-						   Grid.Row="1"
-						   Grid.Column="0" />
-				<TextBox Text="{Binding ApplicationToken.ExpiresIn}"
-						 Style="{StaticResource SettingsTextBoxkStyle}"
-						 Grid.Row="1"
-						 Grid.Column="1"
-						 IsEnabled="False" />
-			</Grid>
-
-
-			<Grid Grid.Row="5"
-				  Grid.Column="1"
-				  Style="{StaticResource SettingsInnerGridStyle}">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition />
-				</Grid.ColumnDefinitions>
-				<TextBlock Text="Access token"
-						   Grid.Row="0"
-						   Grid.Column="0"
-						   Style="{StaticResource SettingsTextBlockStyle}" />
-				<TextBox Text="{Binding UserToken.AccessToken}"
-						 Style="{StaticResource SettingsTextBoxkStyle}"
-						 Grid.Row="0"
-						 Grid.Column="1"
-						 IsEnabled="False" />
-				<TextBlock Text="Expires in"
+						   Grid.Row="1" />
+				<TextBlock Text="RuName"
 						   Style="{StaticResource SettingsTextBlockStyle}"
-						   Grid.Row="1"
-						   Grid.Column="0" />
-				<TextBox Text="{Binding UserToken.ExpiresIn}"
-						 Style="{StaticResource SettingsTextBoxkStyle}"
-						 Grid.Row="1"
-						 Grid.Column="1"
-						 IsEnabled="False" />
-			</Grid>
+						   Grid.Row="2" />
+				<TextBlock Text="DevId"
+						   Style="{StaticResource SettingsTextBlockStyle}"
+						   Grid.Row="3" />
+				<TextBlock Text="Application token"
+						   Style="{StaticResource SettingsTextBlockStyle}"
+						   Grid.Row="4" />
+				<TextBlock Text="User token"
+						   Style="{StaticResource SettingsTextBlockStyle}"
+						   Grid.Row="5" />
 
-			<StackPanel Orientation="Horizontal"
-						Grid.Row="6"
-						Grid.Column="1"
-						HorizontalAlignment="Left">
-				<Button Content="Get user token"
-						Style="{StaticResource SettingsButtonStyle}"
-						Command="{Binding GetUserToken}" />
-				<Button Content="Get application token"
-						Style="{StaticResource SettingsButtonStyle}"
-						Command="{Binding GetApplicationToken}" />
-				<Button Content="Save"
-						Style="{StaticResource SettingsButtonStyle}"
-						Command="{Binding Save}" />
-			</StackPanel>
-		</Grid>
-	</StackPanel>
+				<TextBox Grid.Column="1"
+						 Style="{StaticResource SettingsTextBoxkStyle}"
+						 Text="{Binding AppID, Mode=TwoWay}" />
+				<TextBox Grid.Column="1"
+						 Grid.Row="1"
+						 Style="{StaticResource SettingsTextBoxkStyle}"
+						 Text="{Binding CertID, Mode=TwoWay}" />
+				<TextBox Grid.Column="1"
+						 Grid.Row="2"
+						 Style="{StaticResource SettingsTextBoxkStyle}"
+						 Text="{Binding RuName, Mode=TwoWay}" />
+				<TextBox Grid.Column="1"
+						 Grid.Row="3"
+						 Style="{StaticResource SettingsTextBoxkStyle}"
+						 Text="{Binding DevID, Mode=TwoWay}" />
+
+				<Grid Grid.Row="4"
+					  Grid.Column="1"
+					  Style="{StaticResource SettingsInnerGridStyle}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+					<TextBlock Text="Access token"
+							   Grid.Row="0"
+							   Grid.Column="0"
+							   Style="{StaticResource SettingsTextBlockStyle}" />
+					<TextBox Text="{Binding ApplicationToken.AccessToken}"
+							 Style="{StaticResource SettingsTextBoxkStyle}"
+							 Grid.Row="0"
+							 Grid.Column="1"
+							 IsEnabled="False" />
+					<TextBlock Text="Expires in"
+							   Style="{StaticResource SettingsTextBlockStyle}"
+							   Grid.Row="1"
+							   Grid.Column="0" />
+					<TextBox Text="{Binding ApplicationToken.ExpiresIn}"
+							 Style="{StaticResource SettingsTextBoxkStyle}"
+							 Grid.Row="1"
+							 Grid.Column="1"
+							 IsEnabled="False" />
+				</Grid>
+
+
+				<Grid Grid.Row="5"
+					  Grid.Column="1"
+					  Style="{StaticResource SettingsInnerGridStyle}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+					<TextBlock Text="Access token"
+							   Grid.Row="0"
+							   Grid.Column="0"
+							   Style="{StaticResource SettingsTextBlockStyle}" />
+					<TextBox Text="{Binding UserToken.AccessToken}"
+							 Style="{StaticResource SettingsTextBoxkStyle}"
+							 Grid.Row="0"
+							 Grid.Column="1"
+							 IsEnabled="False" />
+					<TextBlock Text="Expires in"
+							   Style="{StaticResource SettingsTextBlockStyle}"
+							   Grid.Row="1"
+							   Grid.Column="0" />
+					<TextBox Text="{Binding UserToken.ExpiresIn}"
+							 Style="{StaticResource SettingsTextBoxkStyle}"
+							 Grid.Row="1"
+							 Grid.Column="1"
+							 IsEnabled="False" />
+				</Grid>
+
+				<StackPanel Orientation="Horizontal"
+							Grid.Row="6"
+							Grid.Column="1"
+							HorizontalAlignment="Left">
+					<Button Content="Get user token"
+							Command="{Binding GetUserToken}" />
+					<Button Content="Save"
+							Command="{Binding Save}" />
+				</StackPanel>
+			</Grid>
+		</TabItem>
+		<TabItem Header="Magento">
+			<TextBlock Text="Magento!" />
+		</TabItem>
+	</TabControl>
 </UserControl>

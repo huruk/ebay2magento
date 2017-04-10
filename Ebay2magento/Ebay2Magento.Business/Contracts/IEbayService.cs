@@ -9,5 +9,7 @@ namespace Ebay2Magento.Business.Contracts
 		Task<string> GetSessionId(CancellationToken ct);
 
 		Task<UserTokenData> GetUserToken(CancellationToken ct, string sessionId);
+
+		Task GetInventory(CancellationToken ct);
 	}
 }
