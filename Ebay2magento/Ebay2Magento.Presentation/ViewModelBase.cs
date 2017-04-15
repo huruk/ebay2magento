@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reactive.Disposables;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ebay2Magento.Presentation
 {
@@ -16,13 +17,13 @@ namespace Ebay2Magento.Presentation
 
 		private CancellationTokenSource _cancellationTokenSource;
 
-		protected bool IsBusy
+		protected CancellationToken CancellationToken => _cancellationTokenSource.Token;
+
+		public bool IsBusy
 		{
 			get { return GetValue(() => IsBusy); }
 			set { SetValue(() => IsBusy, value); }
 		}
-
-		protected CancellationToken CancellationToken => _cancellationTokenSource.Token;
 
 		public ViewModelBase()
 		{
@@ -30,7 +31,12 @@ namespace Ebay2Magento.Presentation
 			_cancellationTokenSource = new CancellationTokenSource();
 		}
 
-		public virtual void OnLoaded()
+		public void Loaded()
+		{
+			Task.Run(() => OnLoaded());
+		}
+
+		public virtual async Task OnLoaded()
 		{
 		}
 
@@ -52,6 +58,7 @@ namespace Ebay2Magento.Presentation
 				_repository[key] = factory != null ? factory() : default(TType);
 				RaisePropertyChanged(key);
 			}
+
 			return (TType)_repository[key];
 		}
 
@@ -71,6 +78,7 @@ namespace Ebay2Magento.Presentation
 			Disposable.Dispose();
 			_repository.Clear();
 			_cancellationTokenSource.Cancel();
+
 			base.Cleanup();
 		}
 	}

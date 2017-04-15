@@ -13,7 +13,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Content\HomeView.xaml">
+    <Page Include="$(MSBuildThisFileDirectory)Content\Categories.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -73,9 +73,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Content\WebView.xaml.cs">
       <DependentUpon>WebView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\Ebay2MagentoUserControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\HamburgerMenuIconItem.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Content\HomeView.xaml.cs">
-      <DependentUpon>HomeView.xaml</DependentUpon>
+    <Compile Include="$(MSBuildThisFileDirectory)Content\Categories.xaml.cs">
+      <DependentUpon>Categories.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Content\PrivateView.xaml.cs">
       <DependentUpon>PrivateView.xaml</DependentUpon>
@@ -88,8 +89,5 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolToVisibilityConverter.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Controls\" />
   </ItemGroup>
 </Project>

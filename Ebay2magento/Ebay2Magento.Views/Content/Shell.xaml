@@ -63,9 +63,9 @@
 			<controls:HamburgerMenu.ItemsSource>
 				<controls:HamburgerMenuItemCollection>
 					<c:HamburgerMenuIconItem Icon="{iconPacks:PackIconMaterial Kind=Home}"
-											 Label="Home">
+											 Label="Categories">
 						<c:HamburgerMenuIconItem.Tag>
-							<views:HomeView />
+							<views:Categories />
 						</c:HamburgerMenuIconItem.Tag>
 					</c:HamburgerMenuIconItem>
 

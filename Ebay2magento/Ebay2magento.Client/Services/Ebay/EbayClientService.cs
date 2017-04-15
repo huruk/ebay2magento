@@ -35,21 +35,21 @@ namespace Ebay2Magento.Client.Services.Ebay
 			_base64Auth = Convert.ToBase64String(auth);
 		}
 
-		public async Task<string> GetSessionId(CancellationToken ct, string runame, string devId, string appid, string certId)
+		public async Task<string> GetSessionId(CancellationToken ct, EbayContext context)
 		{
 			var xmlDoc = new XmlDocument();
 
 			string strReq = @"<?xml version=""1.0"" encoding=""utf-8""?>
                         <GetSessionIDRequest xmlns=""urn:ebay:apis:eBLBaseComponents"">
-                          <RuName>" + runame + @"</RuName>
+                          <RuName>" + context.RuName + @"</RuName>
                         </GetSessionIDRequest>";
 
 			var httpContent = new StringContent(strReq, Encoding.UTF8, "text/xml");
 
 			var response = await _queryService()
-				.Header("X-EBAY-API-DEV-NAME", devId)
-				.Header("X-EBAY-API-APP-NAME", appid)
-				.Header("X-EBAY-API-CERT-NAME", certId)
+				.Header("X-EBAY-API-DEV-NAME", context.DevID)
+				.Header("X-EBAY-API-APP-NAME", context.AppID)
+				.Header("X-EBAY-API-CERT-NAME", context.CertID)
 				.Header("X-EBAY-API-COMPATIBILITY-LEVEL", "679")
 				.Header("X-EBAY-API-SITEID", "0")
 				.Header("X-EBAY-API-CALL-NAME", "GetSessionID")
@@ -79,21 +79,21 @@ namespace Ebay2Magento.Client.Services.Ebay
 			return sessionID;
 		}
 
-		public async Task<UserTokenData> GetUserToken(CancellationToken ct, string runame, string devId, string appid, string certId, string sessionId)
+		public async Task<UserTokenData> GetUserToken(CancellationToken ct, EbayContext context, string sessionID)
 		{
 			var xmlDoc = new XmlDocument();
 
 			string strReq = @"<?xml version=""1.0"" encoding=""utf-8""?>
                         <FetchTokenRequest xmlns=""urn:ebay:apis:eBLBaseComponents"">
-                          <SessionID>" + sessionId + @"</SessionID>
+                          <SessionID>" + sessionID + @"</SessionID>
                         </FetchTokenRequest>";
 
 			var httpContent = new StringContent(strReq, Encoding.UTF8, "text/xml");
 
 			var response = await _queryService()
-				.Header("X-EBAY-API-DEV-NAME", devId)
-				.Header("X-EBAY-API-APP-NAME", appid)
-				.Header("X-EBAY-API-CERT-NAME", certId)
+				.Header("X-EBAY-API-DEV-NAME", context.DevID)
+				.Header("X-EBAY-API-APP-NAME", context.AppID)
+				.Header("X-EBAY-API-CERT-NAME", context.CertID)
 				.Header("X-EBAY-API-COMPATIBILITY-LEVEL", "679")
 				.Header("X-EBAY-API-SITEID", "0")
 				.Header("X-EBAY-API-CALL-NAME", "FetchToken")
@@ -121,7 +121,7 @@ namespace Ebay2Magento.Client.Services.Ebay
 			};
 		}
 
-		public async Task GetInventory(CancellationToken ct, EbayContext context)
+		public async Task<StoreCustomCategoryTypeCollection> GetCategories(CancellationToken ct, EbayContext context)
 		{
 			var apiContext = new ApiContext()
 			{
@@ -129,8 +129,34 @@ namespace Ebay2Magento.Client.Services.Ebay
 				{
 					ApiAccount = new ApiAccount()
 					{
-						Application = context.AppId,
-						Certificate = context.CertId,
+						Application = context.AppID,
+						Certificate = context.CertID,
+						Developer = context.DevID
+					},
+					eBayToken = context.Token
+				}
+			};
+
+			var call = new GetStoreCall(apiContext);
+			call.CategoryStructureOnly = true;
+
+			call.Execute();
+
+			return call.Store.CustomCategories;
+		}
+
+		public async Task<ItemTypeCollection> GetSellerListIDs(CancellationToken ct, EbayContext context)
+		{
+			var items = new ItemTypeCollection();
+
+			var apiContext = new ApiContext()
+			{
+				ApiCredential = new ApiCredential()
+				{
+					ApiAccount = new ApiAccount()
+					{
+						Application = context.AppID,
+						Certificate = context.CertID,
 						Developer = context.DevID
 					},
 					eBayToken = context.Token
@@ -138,17 +164,26 @@ namespace Ebay2Magento.Client.Services.Ebay
 			};
 
 			var call = new GetSellerListCall(apiContext);
-			call.DetailLevelList = new DetailLevelCodeTypeCollection(new DetailLevelCodeType[] { DetailLevelCodeType.ReturnAll });
-			call.EndTimeFrom = new DateTime(2017, 1, 1);
-			call.EndTimeTo = new DateTime(2017, 3, 1);
+			call.DetailLevelList = new DetailLevelCodeTypeCollection(new DetailLevelCodeType[] { DetailLevelCodeType.ReturnSummary });
+			call.EndTimeFrom = DateTime.Today;
+			call.EndTimeTo = DateTime.Today.AddDays(120);
 			call.Pagination = new PaginationType()
 			{
 				EntriesPerPage = 200,
 				PageNumber = 1
 			};
 
-			await Task.Run(() => call.Execute());
-			var items = call.ItemList;
+			await Task.Run(() =>
+			{
+				do
+				{
+					call.Execute();
+					items.AddRange(call.ItemList);
+					call.Pagination.PageNumber++;
+				} while (call.HasMoreItems);
+			}, ct);
+
+			return items;
 		}
 	}
 }

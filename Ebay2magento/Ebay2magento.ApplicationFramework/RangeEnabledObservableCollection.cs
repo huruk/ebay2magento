@@ -14,7 +14,7 @@ namespace ApplicationFramework
 
 		public RangeEnabledObservableCollection() : base() { }
 
-		public async Task InsertRange(IEnumerable<T> items, Dispatcher dispatcher)
+		public async Task InsertRange(IEnumerable<T> items)
 		{
 			CheckReentrancy();
 

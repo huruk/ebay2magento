@@ -21,26 +21,26 @@ namespace Ebay2magento.Client.Services.Magento
 			_queryService = queryService;
 		}
 
-		public async Task<string> GetBearerToken(CancellationToken ct)
+		public async Task<string> GetBearerToken(CancellationToken ct, string url, string username, string password)
 		{
 			var content = JsonConvert.SerializeObject(new
 			{
-				username = "",
-				password = ""
+				username = username,
+				password = password
 			});
 
 			var httpContent = new StringContent(content, Encoding.UTF8, "application/json");
 
 			return await _queryService()
-				.Post(ct, Constants.Magento.Url + "V1/integration/admin/token", httpContent)
+				.Post(ct, url + "/index.php/rest/V1/integration/admin/token", httpContent)
 				.ToEntity<string>(ct);
 		}
 
-		public async Task<MagentoCategoryData> GetCategories(CancellationToken ct, string bearerToken)
+		public async Task<MagentoCategoryData> GetCategories(CancellationToken ct, string url, string bearerToken)
 		{
 			return await _queryService()
 				.Header("Authorization", "Bearer " + bearerToken)
-				.Get(ct, Constants.Magento.Url + "V1/categories/")
+				.Get(ct, url + "/index.php/rest/V1/categories/")
 				.ToEntity<MagentoCategoryData>(ct);
 		}
 	}

@@ -13,8 +13,10 @@ namespace Ebay2Magento.Presentation
 			ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
 			SimpleIoc.Default.Register<SettingsViewModel>();
+			SimpleIoc.Default.Register<CategoryViewModel>();
 		}
 
 		public SettingsViewModel Settings => ServiceLocator.Current.GetInstance<SettingsViewModel>();
+		public CategoryViewModel Categories => ServiceLocator.Current.GetInstance<CategoryViewModel>();
 	}
 }

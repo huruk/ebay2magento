@@ -3,9 +3,10 @@ using Ebay2magento.ApplicationFramework.Entities;
 using Ebay2Magento.ApplicationFramework.Contracts;
 using Ebay2Magento.Business.Contracts;
 using Ebay2Magento.Client.Entities;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -20,25 +21,25 @@ namespace Ebay2Magento.Presentation
 		public string AppID
 		{
 			get { return GetValue(() => AppID); }
-			set { SetValue(() => AppID, value); }
+			set { _settingsService().SetValue(Constants.Settings.AppID, value); SetValue(() => AppID, value); }
 		}
 
 		public string CertID
 		{
 			get { return GetValue(() => CertID); }
-			set { SetValue(() => CertID, value); }
+			set { _settingsService().SetValue(Constants.Settings.CertID, value); SetValue(() => CertID, value); }
 		}
 
 		public string RuName
 		{
 			get { return GetValue(() => RuName); }
-			set { SetValue(() => RuName, value); }
+			set { _settingsService().SetValue(Constants.Settings.RuName, value); SetValue(() => RuName, value); }
 		}
 
 		public string DevID
 		{
 			get { return GetValue(() => DevID); }
-			set { SetValue(() => DevID, value); }
+			set { _settingsService().SetValue(Constants.Settings.DevID, value); SetValue(() => DevID, value); }
 		}
 
 		public UserTokenData UserToken
@@ -47,16 +48,28 @@ namespace Ebay2Magento.Presentation
 			set { SetValue(() => UserToken, value); }
 		}
 
-		public ApplicationTokenData ApplicationToken
+		public string MagentoUsername
 		{
-			get { return GetValue(() => ApplicationToken); }
-			set { SetValue(() => ApplicationToken, value); }
+			get { return GetValue(() => MagentoUsername); }
+			set { SetValue(() => MagentoUsername, value); }
 		}
 
-		public bool IsCallbackServerRunning
+		public string MagentoPassword
 		{
-			get { return GetValue(() => IsCallbackServerRunning); }
-			set { SetValue(() => IsCallbackServerRunning, value); }
+			get { return GetValue(() => MagentoPassword); }
+			set { SetValue(() => MagentoPassword, value); }
+		}
+
+		public string MagentoUrl
+		{
+			get { return GetValue(() => MagentoUrl); }
+			set { _settingsService().SetValue(Constants.Settings.MagentoUrl, value); SetValue(() => MagentoUrl, value); }
+		}
+
+		public string MagentoToken
+		{
+			get { return GetValue(() => MagentoToken); }
+			set { SetValue(() => MagentoToken, value); }
 		}
 
 		public SettingsViewModel()
@@ -66,20 +79,18 @@ namespace Ebay2Magento.Presentation
 			_magentoService = Resolve<IMagentoService>;
 		}
 
-		public override void OnLoaded()
+		public override async Task OnLoaded()
 		{
 			AppID = _settingsService().GetValue<string>(Constants.Settings.AppID);
 			CertID = _settingsService().GetValue<string>(Constants.Settings.CertID);
 			RuName = _settingsService().GetValue<string>(Constants.Settings.RuName);
 			DevID = _settingsService().GetValue<string>(Constants.Settings.DevID);
-
 			UserToken = _settingsService().GetValue<UserTokenData>(Constants.Settings.UserToken);
-			ApplicationToken = _settingsService().GetValue<ApplicationTokenData>(Constants.Settings.ApplicationToken);
+			MagentoToken = _settingsService().GetValue<string>(Constants.Settings.MagentoToken);
+			MagentoUrl = _settingsService().GetValue<string>(Constants.Settings.MagentoUrl);
 		}
 
-		public ICommand Save => new RelayCommand(() => SaveSettings());
-
-		public ICommand GetUserToken
+		public ICommand GetEbayToken
 		{
 			get
 			{
@@ -96,18 +107,27 @@ namespace Ebay2Magento.Presentation
 						}
 					));
 				},
-				() => UserToken != null);
+				() => UserToken == null);
 			}
 		}
 
-		private void SaveSettings()
+		public ICommand GetMagentoToken
 		{
-			Task.Run(() => _ebayService().GetInventory(CancellationToken));
+			get
+			{
+				return new RelayCommand(async () =>
+				{
+					var magentoToken = await Task.Run(() => _magentoService().GetBearerToken(
+						CancellationToken,
+						MagentoUrl,
+						MagentoUsername,
+						MagentoPassword
+					));
 
-			_settingsService().SetValue(Constants.Settings.AppID, AppID);
-			_settingsService().SetValue(Constants.Settings.CertID, CertID);
-			_settingsService().SetValue(Constants.Settings.RuName, RuName);
-			_settingsService().SetValue(Constants.Settings.DevID, DevID);
+					MagentoToken = magentoToken;
+				},
+				() => MagentoToken == null && MagentoUsername != null && MagentoPassword != null);
+			}
 		}
 	}
 }

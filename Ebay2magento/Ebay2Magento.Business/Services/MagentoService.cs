@@ -1,4 +1,5 @@
-﻿using Ebay2magento.Client.Contracts.Magento;
+﻿using ApplicationFramework;
+using Ebay2magento.Client.Contracts.Magento;
 using Ebay2magento.Client.Entities;
 using Ebay2Magento.ApplicationFramework.Contracts;
 using Ebay2Magento.Business.Contracts;
@@ -19,19 +20,22 @@ namespace Ebay2Magento.Business.Services
 			_settingsService = settingsService;
 		}
 
-		public async Task<bool> GetBearerToken(CancellationToken ct)
+		public async Task<string> GetBearerToken(CancellationToken ct, string url, string username, string password)
 		{
-			var token = await _magentoService().GetBearerToken(ct);
+			var token = await _magentoService().GetBearerToken(ct, url, username, password);
 
-			_settingsService().SetValue("MagentoToken", token);
+			_settingsService().SetValue(Constants.Settings.MagentoToken, token);
+			_settingsService().SetValue(Constants.Settings.MagentoUrl, url);
 
-			return true;
+			return token;
 		}
 
 		public async Task<MagentoCategoryData> GetCategories(CancellationToken ct)
 		{
-			var token = _settingsService().GetValue<string>("MagentoToken");
-			return await _magentoService().GetCategories(ct, token);
+			var token = _settingsService().GetValue<string>(Constants.Settings.MagentoToken);
+			var url = _settingsService().GetValue<string>(Constants.Settings.MagentoUrl);
+
+			return await _magentoService().GetCategories(ct, url, token);
 		}
 	}
 }

@@ -6,7 +6,7 @@ namespace Ebay2Magento.Business.Contracts
 {
 	public interface IMagentoService
 	{
-		Task<bool> GetBearerToken(CancellationToken ct);
+		Task<string> GetBearerToken(CancellationToken ct, string url, string username, string password);
 
 		Task<MagentoCategoryData> GetCategories(CancellationToken ct);
 	}

@@ -13,7 +13,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Magento\IMagentoClientService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Ebay\ITurboListerClientService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\ApplicationTokenData.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Entities\EbayItemData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\MagentoCategoryData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\TokenData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\UserTokenData.cs" />

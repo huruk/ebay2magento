@@ -2,12 +2,12 @@
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:c="clr-namespace:Ebay2Magento.Views.Converters;assembly=">
 
-	<c:BoolToVisibilityConverter x:Key="TrueToVisible"
-								 VisibilityIfFalse="Collapsed"
-								 VisibilityIfTrue="Visible" />
+  <c:BoolToVisibilityConverter x:Key="TrueToVisible"
+							   VisibilityIfFalse="Collapsed"
+							   VisibilityIfTrue="Visible" />
 
-	<c:BoolToVisibilityConverter x:Key="TrueToCollapsed"
-								 VisibilityIfTrue="Collapsed"
-								 VisibilityIfFalse="Visible" />
+  <c:BoolToVisibilityConverter x:Key="TrueToCollapsed"
+							   VisibilityIfTrue="Collapsed"
+							   VisibilityIfFalse="Visible" />
 
 </ResourceDictionary>

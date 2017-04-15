@@ -1,0 +1,80 @@
+﻿<controls:Ebay2MagentoUserControl x:Class="Ebay2Magento.Views.Content.Categories"
+								  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+								  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+								  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+								  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+								  xmlns:controls="clr-namespace:Ebay2Magento.Views.Controls;assembly="
+								  xmlns:mahApps="http://metro.mahapps.com/winfx/xaml/controls"
+								  xmlns:ebay="clr-namespace:eBay.Service.Core.Soap;assembly=ebay.Service"
+								  xmlns:magento="clr-namespace:Ebay2magento.Client.Entities;assembly="
+								  mc:Ignorable="d"
+								  DataContext="{Binding Categories, Source={StaticResource Locator}}">
+	<Grid>
+		<Grid.Resources>
+			<HierarchicalDataTemplate DataType="{x:Type ebay:StoreCustomCategoryType}"
+									  ItemsSource="{Binding ChildCategory}">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{Binding Name}"
+							   Margin="10,0" />
+				</StackPanel>
+			</HierarchicalDataTemplate>
+
+			<HierarchicalDataTemplate DataType="{x:Type magento:MagentoCategoryData}"
+									  ItemsSource="{Binding ChildrenData}">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{Binding Name}"
+							   Margin="10,0" />
+				</StackPanel>
+			</HierarchicalDataTemplate>
+
+			<Style x:Key="ColumnHeaderStyle"
+				   TargetType="TextBlock">
+				<Setter Property="TextAlignment"
+						Value="Center" />
+				<Setter Property="FontSize"
+						Value="15" />
+				<Setter Property="FontWeight"
+						Value="Bold" />
+			</Style>
+		</Grid.Resources>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<TextBlock Text="Ebay categories"
+				   Grid.Column="0"
+				   Grid.Row="0"
+				   Style="{StaticResource ColumnHeaderStyle}" />
+		<TreeView ItemsSource="{Binding EbayCategories}"
+				  Grid.Column="0"
+				  Grid.Row="1" />
+
+		<TextBlock Text="Magento categories"
+				   Grid.Column="1"
+				   Grid.Row="0"
+				   Style="{StaticResource ColumnHeaderStyle}" />
+		<TreeView ItemsSource="{Binding MagentoCategories.ChildrenData}"
+				  Grid.Column="1"
+				  Grid.Row="1" />
+
+		<Border Grid.RowSpan="3"
+				Grid.ColumnSpan="2"
+				Background="White"
+				Visibility="{Binding IsBusy, Converter={StaticResource TrueToVisible}}">
+			<mahApps:ProgressRing IsActive="{Binding IsBusy}"
+								  HorizontalAlignment="Center"
+								  VerticalAlignment="Center"
+								  Grid.RowSpan="3"
+								  Grid.ColumnSpan="2"
+								  IsLarge="True" />
+		</Border>
+	</Grid>
+</controls:Ebay2MagentoUserControl>

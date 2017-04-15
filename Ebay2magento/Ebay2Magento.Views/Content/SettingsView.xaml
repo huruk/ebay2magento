@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="Ebay2Magento.Views.Content.SettingsView"
-			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:c="http://metro.mahapps.com/winfx/xaml/controls"
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 mc:Ignorable="d"
-			 DataContext="{Binding Settings, Source={StaticResource Locator}}">
+﻿<controls:Ebay2MagentoUserControl x:Class="Ebay2Magento.Views.Content.SettingsView"
+								  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+								  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+								  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+								  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+								  xmlns:controls="clr-namespace:Ebay2Magento.Views.Controls;assembly="
+								  mc:Ignorable="d"
+								  DataContext="{Binding Settings, Source={StaticResource Locator}}">
 
 	<UserControl.Resources>
 		<Style x:Key="SettingsTextBlockStyle"
@@ -58,12 +58,9 @@
 				<TextBlock Text="DevId"
 						   Style="{StaticResource SettingsTextBlockStyle}"
 						   Grid.Row="3" />
-				<TextBlock Text="Application token"
-						   Style="{StaticResource SettingsTextBlockStyle}"
-						   Grid.Row="4" />
 				<TextBlock Text="User token"
 						   Style="{StaticResource SettingsTextBlockStyle}"
-						   Grid.Row="5" />
+						   Grid.Row="4" />
 
 				<TextBox Grid.Column="1"
 						 Style="{StaticResource SettingsTextBoxkStyle}"
@@ -81,43 +78,8 @@
 						 Style="{StaticResource SettingsTextBoxkStyle}"
 						 Text="{Binding DevID, Mode=TwoWay}" />
 
+
 				<Grid Grid.Row="4"
-					  Grid.Column="1"
-					  Style="{StaticResource SettingsInnerGridStyle}">
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-					</Grid.RowDefinitions>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
-					<TextBlock Text="Access token"
-							   Grid.Row="0"
-							   Grid.Column="0"
-							   Style="{StaticResource SettingsTextBlockStyle}" />
-					<TextBox Text="{Binding ApplicationToken.AccessToken}"
-							 Style="{StaticResource SettingsTextBoxkStyle}"
-							 Grid.Row="0"
-							 Grid.Column="1"
-							 IsEnabled="False" />
-					<TextBlock Text="Expires in"
-							   Style="{StaticResource SettingsTextBlockStyle}"
-							   Grid.Row="1"
-							   Grid.Column="0" />
-					<TextBox Text="{Binding ApplicationToken.ExpiresIn}"
-							 Style="{StaticResource SettingsTextBoxkStyle}"
-							 Grid.Row="1"
-							 Grid.Column="1"
-							 IsEnabled="False" />
-				</Grid>
-
-
-				<Grid Grid.Row="5"
 					  Grid.Column="1"
 					  Style="{StaticResource SettingsInnerGridStyle}">
 					<Grid.RowDefinitions>
@@ -139,7 +101,7 @@
 							 Grid.Row="0"
 							 Grid.Column="1"
 							 IsEnabled="False" />
-					<TextBlock Text="Expires in"
+					<TextBlock Text="Expires on"
 							   Style="{StaticResource SettingsTextBlockStyle}"
 							   Grid.Row="1"
 							   Grid.Column="0" />
@@ -155,14 +117,69 @@
 							Grid.Column="1"
 							HorizontalAlignment="Left">
 					<Button Content="Get user token"
-							Command="{Binding GetUserToken}" />
-					<Button Content="Save"
-							Command="{Binding Save}" />
+							Command="{Binding GetEbayToken}" />
 				</StackPanel>
 			</Grid>
 		</TabItem>
 		<TabItem Header="Magento">
-			<TextBlock Text="Magento!" />
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition />
+				</Grid.ColumnDefinitions>
+
+				<TextBlock Text="Username"
+						   Grid.Row="0"
+						   Grid.Column="0"
+						   Style="{StaticResource SettingsTextBlockStyle}" />
+				<TextBlock Text="Password"
+						   Grid.Row="1"
+						   Grid.Column="0"
+						   Style="{StaticResource SettingsTextBlockStyle}" />
+				<TextBlock Text="Magento site"
+						   Grid.Row="2"
+						   Grid.Column="0"
+						   Style="{StaticResource SettingsTextBlockStyle}" />
+				<TextBlock Text="Token"
+						   Grid.Row="3"
+						   Grid.Column="0"
+						   Style="{StaticResource SettingsTextBlockStyle}" />
+
+				<TextBox Grid.Column="1"
+						 Grid.Row="0"
+						 Style="{StaticResource SettingsTextBoxkStyle}"
+						 Text="{Binding MagentoUsername, Mode=TwoWay}" />
+				<TextBox Grid.Column="1"
+						 Grid.Row="1"
+						 Style="{StaticResource SettingsTextBoxkStyle}"
+						 Text="{Binding MagentoPassword, Mode=TwoWay}" />
+				<TextBox Grid.Column="1"
+						 Grid.Row="2"
+						 Style="{StaticResource SettingsTextBoxkStyle}"
+						 Text="{Binding MagentoUrl, Mode=TwoWay}" />
+				<TextBox Grid.Column="1"
+						 Grid.Row="3"
+						 Style="{StaticResource SettingsTextBoxkStyle}"
+						 IsEnabled="False"
+						 Text="{Binding MagentoToken}" />
+
+				<StackPanel Orientation="Horizontal"
+							Grid.Row="6"
+							Grid.Column="1"
+							HorizontalAlignment="Left">
+					<Button Content="Get admin token"
+							Command="{Binding GetMagentoToken}" />
+				</StackPanel>
+			</Grid>
 		</TabItem>
 	</TabControl>
-</UserControl>
+</controls:Ebay2MagentoUserControl>
