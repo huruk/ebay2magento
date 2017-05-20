@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.0
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ebay2Magento.Client", "Ebay2magento.Client\Ebay2Magento.Client.shproj", "{1663AEFE-DD23-42DD-9C79-D46119B5C1EC}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ebay2Magento.ApplicationFramework", "Ebay2magento.ApplicationFramework\Ebay2Magento.ApplicationFramework.shproj", "{B27861A0-F139-44D8-80CE-BBB149301DEF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallbackServer", "CallbackServer\CallbackServer.csproj", "{0524EF6C-F535-4786-869A-4601916CF55C}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Ebay2Magento.Business", "Ebay2Magento.Business\Ebay2Magento.Business.shproj", "{8DC0A5EC-0596-4DB6-AE78-EFB44C45AAB1}"
 EndProject
@@ -46,22 +44,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Debug|ARM.Build.0 = Debug|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Debug|x64.Build.0 = Debug|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Debug|x86.Build.0 = Debug|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Release|ARM.ActiveCfg = Release|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Release|ARM.Build.0 = Release|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Release|x64.ActiveCfg = Release|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Release|x64.Build.0 = Release|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Release|x86.ActiveCfg = Release|Any CPU
-		{0524EF6C-F535-4786-869A-4601916CF55C}.Release|x86.Build.0 = Release|Any CPU
 		{20D2B8B9-52A0-4270-BC97-127E63E93C12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{20D2B8B9-52A0-4270-BC97-127E63E93C12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20D2B8B9-52A0-4270-BC97-127E63E93C12}.Debug|ARM.ActiveCfg = Debug|Any CPU

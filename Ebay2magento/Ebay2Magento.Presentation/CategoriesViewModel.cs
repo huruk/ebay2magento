@@ -2,8 +2,12 @@
 using Ebay2magento.Client.Entities;
 using Ebay2Magento.ApplicationFramework.Contracts;
 using Ebay2Magento.Business.Contracts;
+using GalaSoft.MvvmLight.Command;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace Ebay2Magento.Presentation
@@ -20,10 +24,28 @@ namespace Ebay2Magento.Presentation
 			set { SetValue(() => EbayCategories, value); }
 		}
 
-		public MagentoCategoryData MagentoCategories
+		public CategoryData MagentoCategories
 		{
 			get { return GetValue(() => MagentoCategories); }
 			set { SetValue(() => MagentoCategories, value); }
+		}
+
+		public CategoryData[] FlattenedCategories
+		{
+			get { return GetValue(() => FlattenedCategories); }
+			set { SetValue(() => FlattenedCategories, value); }
+		}
+
+		public CategoryData SelectedCategory
+		{
+			get { return GetValue(() => SelectedCategory); }
+			set { SetValue(() => SelectedCategory, value); }
+		}
+
+		public string NewCategoryName
+		{
+			get { return GetValue(() => NewCategoryName); }
+			set { SetValue(() => NewCategoryName, value); }
 		}
 
 		public CategoryViewModel()
@@ -44,8 +66,43 @@ namespace Ebay2Magento.Presentation
 				EbayCategories = ebayCategories;
 				MagentoCategories = magentoCategories;
 
+				FlattenedCategories = FlattenCategories(MagentoCategories.ChildrenData);
+
 				IsBusy = false;
 			});
+		}
+
+		public ICommand CreateCategory => new RelayCommand(async () =>
+		{
+			await _magentoService().CreateCategory(CancellationToken, NewCategoryName, SelectedCategory);
+			var magentoCategories = await _magentoService().GetCategories(CancellationToken);
+
+			Dispatcher.CurrentDispatcher.Invoke(() =>
+			{
+				MagentoCategories = magentoCategories;
+				FlattenedCategories = FlattenCategories(MagentoCategories.ChildrenData);
+			});
+		});
+
+		private CategoryData[] FlattenCategories(CategoryData[] categoryData)
+		{
+			if (categoryData == null)
+			{
+				return new CategoryData[0];
+			}
+
+			var data = new List<CategoryData>();
+
+			foreach (var category in categoryData)
+			{
+				data.Add(category);
+				if (category.ChildrenData != null)
+				{
+					data.AddRange(FlattenCategories(category.ChildrenData));
+				}
+			}
+
+			return data.ToArray();
 		}
 	}
 }

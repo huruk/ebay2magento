@@ -2,6 +2,7 @@
 using ApplicationFramework.Extensions;
 using Ebay2magento.Client.Contracts.Magento;
 using Ebay2magento.Client.Entities;
+using Ebay2magento.Client.Entities.Outbound;
 using Ebay2Magento.ApplicationFramework.Contracts;
 using Newtonsoft.Json;
 using System;
@@ -36,12 +37,31 @@ namespace Ebay2magento.Client.Services.Magento
 				.ToEntity<string>(ct);
 		}
 
-		public async Task<MagentoCategoryData> GetCategories(CancellationToken ct, string url, string bearerToken)
+		public async Task<CategoryData> GetCategories(CancellationToken ct, string url, string bearerToken)
 		{
 			return await _queryService()
 				.Header("Authorization", "Bearer " + bearerToken)
 				.Get(ct, url + "/index.php/rest/V1/categories/")
-				.ToEntity<MagentoCategoryData>(ct);
+				.ToEntity<CategoryData>(ct);
+		}
+
+		public async Task<CategoryData> CreateCategory(CancellationToken ct, string url, string bearerToken, CategoryOutboundData category)
+		{
+			var obj = new { category = category };
+
+			var httpContent = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
+
+			await _queryService()
+				.Header("Authorization", "Bearer " + bearerToken)
+				.Post(ct, url + "/index.php/rest/V1/categories", httpContent);
+
+			return null;
+		}
+
+		public async Task DeleteCategory(CancellationToken ct, string url, string categoryId, string bearerToken)
+		{
+			await _queryService()
+				.Delete(ct, url + categoryId);
 		}
 	}
 }

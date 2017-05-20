@@ -19,13 +19,17 @@
 				</StackPanel>
 			</HierarchicalDataTemplate>
 
-			<HierarchicalDataTemplate DataType="{x:Type magento:MagentoCategoryData}"
+			<HierarchicalDataTemplate DataType="{x:Type magento:CategoryData}"
 									  ItemsSource="{Binding ChildrenData}">
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Text="{Binding Name}"
 							   Margin="10,0" />
 				</StackPanel>
 			</HierarchicalDataTemplate>
+
+			<DataTemplate x:Key="ComboboxCategoriesTemplate">
+				<TextBlock  Text="{Binding Name}" />
+			</DataTemplate>
 
 			<Style x:Key="ColumnHeaderStyle"
 				   TargetType="TextBlock">
@@ -40,12 +44,13 @@
 
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition />
+			<ColumnDefinition Width="Auto" />
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
-			<RowDefinition />
+			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
@@ -55,20 +60,53 @@
 				   Style="{StaticResource ColumnHeaderStyle}" />
 		<TreeView ItemsSource="{Binding EbayCategories}"
 				  Grid.Column="0"
-				  Grid.Row="1" />
+				  Grid.Row="1"
+				  Margin="15,0" />
 
 		<TextBlock Text="Magento categories"
-				   Grid.Column="1"
+				   Grid.Column="2"
 				   Grid.Row="0"
 				   Style="{StaticResource ColumnHeaderStyle}" />
 		<TreeView ItemsSource="{Binding MagentoCategories.ChildrenData}"
-				  Grid.Column="1"
-				  Grid.Row="1" />
+				  Grid.Column="2"
+				  Grid.Row="1"
+				  Margin="15,0" />
+
+		<Button Grid.RowSpan="3"
+				Grid.Column="1"
+				Content="->"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Margin="15,0" />
+
+		<StackPanel Orientation="Horizontal"
+					Grid.Row="3"
+					Grid.Column="2">
+
+			<TextBlock Text="New category: "
+					   Margin="0,0,15,0" />
+			<TextBox Width="250"
+					 Text="{Binding NewCategoryName, Mode=TwoWay}"
+					 HorizontalContentAlignment="Stretch"
+					 VerticalContentAlignment="Stretch"
+					 Margin="15,0" />
+			<TextBlock Text="Under"
+					   Margin="0,0,15,0" />
+
+			<ComboBox ItemsSource="{Binding  FlattenedCategories}"
+					  ItemTemplate="{StaticResource ComboboxCategoriesTemplate}"
+					  SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
+					  Margin="15,0"
+					  MinWidth="250"/>
+			<Button Content="Create"
+					Command="{Binding CreateCategory}" />
+		</StackPanel>
 
 		<Border Grid.RowSpan="3"
-				Grid.ColumnSpan="2"
+				Grid.ColumnSpan="3"
 				Background="White"
-				Visibility="{Binding IsBusy, Converter={StaticResource TrueToVisible}}">
+				Visibility="{Binding IsBusy, Converter={StaticResource TrueToVisible}}"
+				d:IsHidden="True">
 			<mahApps:ProgressRing IsActive="{Binding IsBusy}"
 								  HorizontalAlignment="Center"
 								  VerticalAlignment="Center"

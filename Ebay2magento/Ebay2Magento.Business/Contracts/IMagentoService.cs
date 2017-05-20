@@ -8,6 +8,8 @@ namespace Ebay2Magento.Business.Contracts
 	{
 		Task<string> GetBearerToken(CancellationToken ct, string url, string username, string password);
 
-		Task<MagentoCategoryData> GetCategories(CancellationToken ct);
+		Task<CategoryData> GetCategories(CancellationToken ct);
+
+		Task<CategoryData> CreateCategory(CancellationToken ct, string name, CategoryData parent);
 	}
 }

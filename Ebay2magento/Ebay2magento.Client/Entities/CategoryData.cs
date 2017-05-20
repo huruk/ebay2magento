@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace Ebay2magento.Client.Entities
 {
 	[Bindable(BindableSupport.Yes)]
-	public class MagentoCategoryData
+	public class CategoryData
 	{
 		[JsonProperty("id")]
 		public int Id { get; set; }
@@ -28,6 +28,6 @@ namespace Ebay2magento.Client.Entities
 		public int ProductCount { get; set; }
 
 		[JsonProperty("children_data")]
-		public MagentoCategoryData[] ChildrenData { get; set; }
+		public CategoryData[] ChildrenData { get; set; }
 	}
 }
