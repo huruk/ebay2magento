@@ -164,12 +164,12 @@ namespace Ebay2Magento.Client.Services.Ebay
 			};
 
 			var call = new GetSellerListCall(apiContext);
-			call.DetailLevelList = new DetailLevelCodeTypeCollection(new DetailLevelCodeType[] { DetailLevelCodeType.ReturnSummary });
+			call.DetailLevelList = new DetailLevelCodeTypeCollection(new DetailLevelCodeType[] { DetailLevelCodeType.ReturnAll });
 			call.EndTimeFrom = DateTime.Today;
 			call.EndTimeTo = DateTime.Today.AddDays(120);
 			call.Pagination = new PaginationType()
 			{
-				EntriesPerPage = 200,
+				EntriesPerPage = 5,
 				PageNumber = 1
 			};
 

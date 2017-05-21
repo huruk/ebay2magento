@@ -80,7 +80,7 @@
 				Margin="15,0"
 				Command="{Binding SyncCategories}" />
 
-		<StackPanel Orientation="Horizontal"
+		<!--<StackPanel Orientation="Horizontal"
 					Grid.Row="3"
 					Grid.Column="2">
 
@@ -101,7 +101,7 @@
 					  MinWidth="250" />
 			<Button Content="Create"
 					Command="{Binding CreateCategory}" />
-		</StackPanel>
+		</StackPanel>-->
 
 		<Border Grid.RowSpan="3"
 				Grid.ColumnSpan="3"

@@ -1,11 +1,9 @@
 ﻿using eBay.Service.Core.Soap;
 using Ebay2magento.Client.Entities;
-using Ebay2Magento.ApplicationFramework.Contracts;
 using Ebay2Magento.Business.Contracts;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -14,7 +12,6 @@ namespace Ebay2Magento.Presentation
 {
 	public class CategoryViewModel : ViewModelBase
 	{
-		private Func<ISettingsService> _settingsService;
 		private Func<IEbayService> _ebayService;
 		private Func<IMagentoService> _magentoService;
 
@@ -50,7 +47,6 @@ namespace Ebay2Magento.Presentation
 
 		public CategoryViewModel()
 		{
-			_settingsService = Resolve<ISettingsService>;
 			_ebayService = Resolve<IEbayService>;
 			_magentoService = Resolve<IMagentoService>;
 		}

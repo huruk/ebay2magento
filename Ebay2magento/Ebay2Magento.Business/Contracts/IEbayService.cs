@@ -14,7 +14,7 @@ namespace Ebay2Magento.Business.Contracts
 
 		Task<UserTokenData> GetUserToken(CancellationToken ct, string sessionId);
 
-		Task<ItemTypeCollection> GetSellerListIDs(CancellationToken ct);
+		Task<ItemType[]> GetInventory(CancellationToken ct);
 
 		Task<StoreCustomCategoryTypeCollection> GetCategories(CancellationToken ct);
 

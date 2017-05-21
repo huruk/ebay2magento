@@ -62,17 +62,17 @@
 			<!--  Items  -->
 			<controls:HamburgerMenu.ItemsSource>
 				<controls:HamburgerMenuItemCollection>
+					<c:HamburgerMenuIconItem Icon="{iconPacks:PackIconMaterial Kind=AccountCircle}"
+											 Label="Products">
+						<c:HamburgerMenuIconItem.Tag>
+							<views:Products />
+						</c:HamburgerMenuIconItem.Tag>
+					</c:HamburgerMenuIconItem>
+
 					<c:HamburgerMenuIconItem Icon="{iconPacks:PackIconMaterial Kind=Home}"
 											 Label="Categories">
 						<c:HamburgerMenuIconItem.Tag>
 							<views:Categories />
-						</c:HamburgerMenuIconItem.Tag>
-					</c:HamburgerMenuIconItem>
-
-					<c:HamburgerMenuIconItem Icon="{iconPacks:PackIconMaterial Kind=AccountCircle}"
-											 Label="Private">
-						<c:HamburgerMenuIconItem.Tag>
-							<views:PrivateView />
 						</c:HamburgerMenuIconItem.Tag>
 					</c:HamburgerMenuIconItem>
 

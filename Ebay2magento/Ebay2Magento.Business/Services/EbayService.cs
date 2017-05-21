@@ -6,7 +6,9 @@ using Ebay2Magento.ApplicationFramework.Contracts;
 using Ebay2Magento.Business.Contracts;
 using Ebay2Magento.Client.Contracts.Ebay;
 using Ebay2Magento.Client.Entities;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +20,11 @@ namespace Ebay2Magento.Business.Services
 		private Func<ISettingsService> _settingsService;
 		private Func<ITurboListerClientService> _turbolisterService;
 
+		private static string Path =
+			System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "ebay2magento", "ebayItems.json");
+
 		private EbayContext _context;
+		private ItemType[] _localItems;
 
 		public EbayService(
 			Func<IEbayClientService> ebayService,
@@ -37,6 +43,21 @@ namespace Ebay2Magento.Business.Services
 				RuName = _settingsService().GetValue<string>(Constants.Settings.RuName),
 				Token = _settingsService().GetValue<UserTokenData>(Constants.Settings.UserToken)?.AccessToken,
 			};
+
+			if (File.Exists(Path))
+			{
+				var settings = File.ReadAllText(Path);
+				_localItems = JsonConvert.DeserializeObject<ItemType[]>(settings);
+			}
+		}
+
+		~EbayService()
+		{
+			var items = JsonConvert.SerializeObject(_localItems);
+			var file = new FileInfo(Path);
+			file.Directory.Create();
+
+			File.WriteAllText(file.FullName, items);
 		}
 
 		public EbayContext Context => _context;
@@ -62,9 +83,15 @@ namespace Ebay2Magento.Business.Services
 			return await _ebayService().GetCategories(ct, Context);
 		}
 
-		public async Task<ItemTypeCollection> GetSellerListIDs(CancellationToken ct)
+		public async Task<ItemType[]> GetInventory(CancellationToken ct)
 		{
-			return await _ebayService().GetSellerListIDs(ct, Context);
+			if (_localItems == null)
+			{
+				var items = await _ebayService().GetSellerListIDs(ct, Context);
+				return _localItems = items.ToArray();
+			}
+
+			return _localItems;
 		}
 	}
 }

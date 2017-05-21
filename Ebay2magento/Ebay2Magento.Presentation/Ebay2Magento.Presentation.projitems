@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CategoriesViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\EbayItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProductsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SettingsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModelLocator.cs" />

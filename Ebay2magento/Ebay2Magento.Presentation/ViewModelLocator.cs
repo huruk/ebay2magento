@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GalaSoft.MvvmLight.Ioc;
+﻿using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ebay2Magento.Presentation
@@ -14,9 +11,13 @@ namespace Ebay2Magento.Presentation
 
 			SimpleIoc.Default.Register<SettingsViewModel>();
 			SimpleIoc.Default.Register<CategoryViewModel>();
+			SimpleIoc.Default.Register<ProductsViewModel>();
 		}
 
 		public SettingsViewModel Settings => ServiceLocator.Current.GetInstance<SettingsViewModel>();
+
 		public CategoryViewModel Categories => ServiceLocator.Current.GetInstance<CategoryViewModel>();
+
+		public ProductsViewModel Products => ServiceLocator.Current.GetInstance<ProductsViewModel>();
 	}
 }
