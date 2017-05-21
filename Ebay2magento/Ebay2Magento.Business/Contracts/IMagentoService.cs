@@ -1,4 +1,5 @@
-﻿using Ebay2magento.Client.Entities;
+﻿using eBay.Service.Core.Soap;
+using Ebay2magento.Client.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,5 +12,7 @@ namespace Ebay2Magento.Business.Contracts
 		Task<CategoryData> GetCategories(CancellationToken ct);
 
 		Task<CategoryData> CreateCategory(CancellationToken ct, string name, CategoryData parent);
+
+		Task SyncCategories(CancellationToken ct, StoreCustomCategoryTypeCollection ebayCategories, CategoryData magentoCategories);
 	}
 }

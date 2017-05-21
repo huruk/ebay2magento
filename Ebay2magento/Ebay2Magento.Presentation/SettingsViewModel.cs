@@ -69,7 +69,7 @@ namespace Ebay2Magento.Presentation
 		public string MagentoToken
 		{
 			get { return GetValue(() => MagentoToken); }
-			set { SetValue(() => MagentoToken, value); }
+			set { _settingsService().SetValue(Constants.Settings.MagentoToken, value); SetValue(() => MagentoToken, value); }
 		}
 
 		public SettingsViewModel()
@@ -126,7 +126,7 @@ namespace Ebay2Magento.Presentation
 
 					MagentoToken = magentoToken;
 				},
-				() => MagentoToken == null && MagentoUsername != null && MagentoPassword != null);
+				() => MagentoUsername != null && MagentoPassword != null);
 			}
 		}
 	}

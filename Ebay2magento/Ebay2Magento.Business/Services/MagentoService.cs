@@ -7,6 +7,8 @@ using Ebay2Magento.Business.Contracts;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using eBay.Service.Core.Soap;
+using System.Linq;
 
 namespace Ebay2Magento.Business.Services
 {
@@ -61,6 +63,37 @@ namespace Ebay2Magento.Business.Services
 			var url = _settingsService().GetValue<string>(Constants.Settings.MagentoUrl);
 
 			await _magentoService().DeleteCategory(ct, url, categoryId, token);
+		}
+
+		public async Task SyncCategories(CancellationToken ct, StoreCustomCategoryTypeCollection ebayCategories, CategoryData magentoCategories)
+		{
+			var selectedCategory = magentoCategories;
+
+			foreach (var ebayCategory in ebayCategories.ToArray())
+			{
+				if (!magentoCategories.ChildrenData.Any(c => c.Name.Equals(ebayCategory.Name)))
+				{
+					await CreateCategory(ct, ebayCategory.Name, selectedCategory);
+				}
+			}
+
+			var updatedCategories = await GetCategories(ct);
+
+			foreach (var ebayCategory in ebayCategories.ToArray())
+			{
+				if (ebayCategory.ChildCategory != null)
+				{
+					var targetCategory = updatedCategories.ChildrenData.Single(c => c.Name.Equals(ebayCategory.Name));
+
+					foreach (var ebayChild in ebayCategory.ChildCategory.ToArray())
+					{
+						if (!targetCategory.ChildrenData.Any(c => c.Name.Equals(ebayChild.Name)))
+						{
+							await CreateCategory(ct, ebayChild.Name, targetCategory);
+						}
+					}
+				}
+			}
 		}
 	}
 }

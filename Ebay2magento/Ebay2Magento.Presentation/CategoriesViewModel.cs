@@ -74,7 +74,25 @@ namespace Ebay2Magento.Presentation
 
 		public ICommand CreateCategory => new RelayCommand(async () =>
 		{
+			if (SelectedCategory == null)
+			{
+				SelectedCategory = MagentoCategories;
+			}
+
 			await _magentoService().CreateCategory(CancellationToken, NewCategoryName, SelectedCategory);
+			var magentoCategories = await _magentoService().GetCategories(CancellationToken);
+
+			Dispatcher.CurrentDispatcher.Invoke(() =>
+			{
+				MagentoCategories = magentoCategories;
+				FlattenedCategories = FlattenCategories(MagentoCategories.ChildrenData);
+			});
+		});
+
+		public ICommand SyncCategories => new RelayCommand(async () =>
+		{
+			await _magentoService().SyncCategories(CancellationToken, EbayCategories, MagentoCategories);
+
 			var magentoCategories = await _magentoService().GetCategories(CancellationToken);
 
 			Dispatcher.CurrentDispatcher.Invoke(() =>

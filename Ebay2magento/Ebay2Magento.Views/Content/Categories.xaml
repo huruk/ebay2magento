@@ -77,7 +77,8 @@
 				Content="->"
 				HorizontalAlignment="Center"
 				VerticalAlignment="Center"
-				Margin="15,0" />
+				Margin="15,0"
+				Command="{Binding SyncCategories}" />
 
 		<StackPanel Orientation="Horizontal"
 					Grid.Row="3"
@@ -97,7 +98,7 @@
 					  ItemTemplate="{StaticResource ComboboxCategoriesTemplate}"
 					  SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
 					  Margin="15,0"
-					  MinWidth="250"/>
+					  MinWidth="250" />
 			<Button Content="Create"
 					Command="{Binding CreateCategory}" />
 		</StackPanel>
