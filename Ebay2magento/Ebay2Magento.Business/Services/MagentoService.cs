@@ -65,11 +65,11 @@ namespace Ebay2Magento.Business.Services
 			await _magentoService().DeleteCategory(ct, url, categoryId, token);
 		}
 
-		public async Task SyncCategories(CancellationToken ct, StoreCustomCategoryTypeCollection ebayCategories, CategoryData magentoCategories)
+		public async Task SyncCategories(CancellationToken ct, StoreCustomCategoryType[] ebayCategories, CategoryData magentoCategories)
 		{
 			var selectedCategory = magentoCategories;
 
-			foreach (var ebayCategory in ebayCategories.ToArray())
+			foreach (var ebayCategory in ebayCategories)
 			{
 				if (!magentoCategories.ChildrenData.Any(c => c.Name.Equals(ebayCategory.Name)))
 				{

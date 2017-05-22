@@ -16,7 +16,6 @@ namespace Ebay2Magento.Business.Contracts
 
 		Task<ItemType[]> GetInventory(CancellationToken ct);
 
-		Task<StoreCustomCategoryTypeCollection> GetCategories(CancellationToken ct);
-
+		Task<StoreCustomCategoryType[]> GetCategories(CancellationToken ct);
 	}
 }

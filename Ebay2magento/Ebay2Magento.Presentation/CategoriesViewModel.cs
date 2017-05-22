@@ -15,7 +15,7 @@ namespace Ebay2Magento.Presentation
 		private Func<IEbayService> _ebayService;
 		private Func<IMagentoService> _magentoService;
 
-		public StoreCustomCategoryTypeCollection EbayCategories
+		public StoreCustomCategoryType[] EbayCategories
 		{
 			get { return GetValue(() => EbayCategories); }
 			set { SetValue(() => EbayCategories, value); }

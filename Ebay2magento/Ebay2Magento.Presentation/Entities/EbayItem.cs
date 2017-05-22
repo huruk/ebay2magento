@@ -15,5 +15,7 @@ namespace Ebay2Magento.Presentation.Entities
 		public int Quantity { get; set; }
 
 		public string SKU { get; set; }
+
+		public string Category { get; set; }
 	}
 }

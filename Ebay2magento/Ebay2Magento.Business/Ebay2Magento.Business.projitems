@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\IEbayService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\IMagentoService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ItemTypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\EbayService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\MagentoService.cs" />
   </ItemGroup>

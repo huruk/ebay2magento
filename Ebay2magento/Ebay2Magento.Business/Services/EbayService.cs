@@ -1,13 +1,16 @@
 ﻿using ApplicationFramework;
 using eBay.Service.Core.Soap;
 using Ebay2magento.ApplicationFramework.Entities;
+using Ebay2magento.ApplicationFramework.Serialization;
 using Ebay2magento.Client.Contracts.Ebay;
 using Ebay2Magento.ApplicationFramework.Contracts;
 using Ebay2Magento.Business.Contracts;
 using Ebay2Magento.Client.Contracts.Ebay;
 using Ebay2Magento.Client.Entities;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,11 +23,15 @@ namespace Ebay2Magento.Business.Services
 		private Func<ISettingsService> _settingsService;
 		private Func<ITurboListerClientService> _turbolisterService;
 
-		private static string Path =
+		private static string ItemPath =
 			System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "ebay2magento", "ebayItems.json");
+
+		private static string CategoryPath =
+			System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "ebay2magento", "ebayCategories.json");
 
 		private EbayContext _context;
 		private ItemType[] _localItems;
+		private StoreCustomCategoryType[] _localCategories;
 
 		public EbayService(
 			Func<IEbayClientService> ebayService,
@@ -44,20 +51,52 @@ namespace Ebay2Magento.Business.Services
 				Token = _settingsService().GetValue<UserTokenData>(Constants.Settings.UserToken)?.AccessToken,
 			};
 
-			if (File.Exists(Path))
+			if (File.Exists(ItemPath))
 			{
-				var settings = File.ReadAllText(Path);
-				_localItems = JsonConvert.DeserializeObject<ItemType[]>(settings);
+				var items = File.ReadAllText(ItemPath);
+				_localItems = JsonConvert.DeserializeObject<ItemType[]>(items);
+			}
+
+			if (File.Exists(CategoryPath))
+			{
+				var converter = new StoreCustomCategoryTypeSerializer();
+				var categories = File.ReadAllText(CategoryPath);
+				_localCategories = JsonConvert.DeserializeObject<StoreCustomCategoryType[]>(categories);
+
+				foreach (var category in _localCategories)
+				{
+					if (category.ChildCategory != null)
+					{
+						var childrenCategories = new List<StoreCustomCategoryType>();
+
+						foreach (var child in category.ChildCategory)
+						{
+							var obj = child as JObject;
+							if (obj != null)
+							{
+								childrenCategories.Add(obj.ToObject<StoreCustomCategoryType>());
+							}
+						}
+
+						category.ChildCategory = new StoreCustomCategoryTypeCollection(childrenCategories.ToArray());
+					}
+				}
 			}
 		}
 
 		~EbayService()
 		{
 			var items = JsonConvert.SerializeObject(_localItems);
-			var file = new FileInfo(Path);
+			var file = new FileInfo(ItemPath);
 			file.Directory.Create();
 
 			File.WriteAllText(file.FullName, items);
+
+			var categories = JsonConvert.SerializeObject(_localCategories);
+			file = new FileInfo(CategoryPath);
+			file.Directory.Create();
+
+			File.WriteAllText(file.FullName, categories);
 		}
 
 		public EbayContext Context => _context;
@@ -78,9 +117,15 @@ namespace Ebay2Magento.Business.Services
 			return userToken;
 		}
 
-		public async Task<StoreCustomCategoryTypeCollection> GetCategories(CancellationToken ct)
+		public async Task<StoreCustomCategoryType[]> GetCategories(CancellationToken ct)
 		{
-			return await _ebayService().GetCategories(ct, Context);
+			if (_localCategories == null)
+			{
+				var items = await _ebayService().GetCategories(ct, Context);
+				return _localCategories = items.ToArray();
+			}
+
+			return _localCategories;
 		}
 
 		public async Task<ItemType[]> GetInventory(CancellationToken ct)

@@ -13,6 +13,6 @@ namespace Ebay2Magento.Business.Contracts
 
 		Task<CategoryData> CreateCategory(CancellationToken ct, string name, CategoryData parent);
 
-		Task SyncCategories(CancellationToken ct, StoreCustomCategoryTypeCollection ebayCategories, CategoryData magentoCategories);
+		Task SyncCategories(CancellationToken ct, StoreCustomCategoryType[] ebayCategories, CategoryData magentoCategories);
 	}
 }

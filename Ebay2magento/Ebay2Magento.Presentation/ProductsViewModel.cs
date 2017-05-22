@@ -1,5 +1,6 @@
 ﻿using eBay.Service.Core.Soap;
 using Ebay2Magento.Business.Contracts;
+using Ebay2Magento.Business.Extensions;
 using Ebay2Magento.Presentation.Entities;
 using System;
 using System.Linq;
@@ -29,17 +30,24 @@ namespace Ebay2Magento.Presentation
 		{
 			IsBusy = true;
 			var ebayItems = await _ebayService().GetInventory(CancellationToken);
+			var ebayCategories = await _ebayService().GetCategories(CancellationToken);
 
-			Dispatcher.CurrentDispatcher.Invoke(() =>
+			var items = ebayItems.Select(item =>
 			{
-				var items = ebayItems.Select(item => new EbayItem()
+				var itemCategory = item.FindItemCategory(ebayCategories);
+
+				return new EbayItem()
 				{
 					Id = item.ItemID,
 					Title = item.Title,
 					Quantity = item.Quantity,
-					SKU = item.SKU
-				});
+					SKU = item.SKU,
+					Category = itemCategory?.Name
+				};
+			});
 
+			Dispatcher.CurrentDispatcher.Invoke(() =>
+			{
 				EbayItems = items.ToArray();
 				IsBusy = false;
 			});

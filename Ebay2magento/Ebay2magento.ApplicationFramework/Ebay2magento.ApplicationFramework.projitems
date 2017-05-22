@@ -20,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\HttpResponseMessageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\UnityContainerExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RangeEnabledObservableCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Serialization\StoreCustomCategoryTypeSerializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\QueryService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\SettingsService.cs" />
   </ItemGroup>
