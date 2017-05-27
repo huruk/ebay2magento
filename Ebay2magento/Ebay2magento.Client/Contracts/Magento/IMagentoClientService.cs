@@ -14,5 +14,7 @@ namespace Ebay2magento.Client.Contracts.Magento
 		Task<CategoryData> CreateCategory(CancellationToken ct, string url, string bearerToken, CategoryOutboundData category);
 
 		Task DeleteCategory(CancellationToken ct, string url, string categoryId, string bearerToken);
+
+		Task CreateProduct(CancellationToken ct, string url, string bearerToken, ProductOutboundData product);
 	}
 }

@@ -1,10 +1,11 @@
-﻿using eBay.Service.Core.Soap;
-using Ebay2Magento.Business.Contracts;
+﻿using Ebay2Magento.Business.Contracts;
 using Ebay2Magento.Business.Extensions;
 using Ebay2Magento.Presentation.Entities;
+using GalaSoft.MvvmLight.Command;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace Ebay2Magento.Presentation
@@ -14,7 +15,7 @@ namespace Ebay2Magento.Presentation
 		private Func<IEbayService> _ebayService;
 		private Func<IMagentoService> _magentoService;
 
-		public EbayItem[] EbayItems
+		public StoreItem[] EbayItems
 		{
 			get { return GetValue(() => EbayItems); }
 			set { SetValue(() => EbayItems, value); }
@@ -32,19 +33,23 @@ namespace Ebay2Magento.Presentation
 			var ebayItems = await _ebayService().GetInventory(CancellationToken);
 			var ebayCategories = await _ebayService().GetCategories(CancellationToken);
 
-			var items = ebayItems.Select(item =>
-			{
-				var itemCategory = item.FindItemCategory(ebayCategories);
-
-				return new EbayItem()
+			var items = ebayItems
+				.Where(item => !string.IsNullOrEmpty(item.SKU))
+				.Select(item =>
 				{
-					Id = item.ItemID,
-					Title = item.Title,
-					Quantity = item.Quantity,
-					SKU = item.SKU,
-					Category = itemCategory?.Name
-				};
-			});
+					var itemCategory = item.FindItemCategory(ebayCategories);
+
+					return new StoreItem()
+					{
+						Id = item.ItemID,
+						Title = item.Title,
+						Quantity = item.Quantity,
+						SKU = item.SKU,
+						Category = itemCategory?.Name,
+						Price = item.StartPrice.Value,
+						Description = item.Description.Replace("\n", "")
+					};
+				});
 
 			Dispatcher.CurrentDispatcher.Invoke(() =>
 			{
@@ -52,5 +57,17 @@ namespace Ebay2Magento.Presentation
 				IsBusy = false;
 			});
 		}
+
+		public ICommand SyncProducts => new RelayCommand(async () =>
+		{
+			IsBusy = true;
+
+			foreach (var item in EbayItems)
+			{
+				await _magentoService().CreateProduct(CancellationToken, item);
+			}
+
+			IsBusy = false;
+		});
 	}
 }

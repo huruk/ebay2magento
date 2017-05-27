@@ -28,21 +28,39 @@
 
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition />
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
-		<DataGrid ItemsSource="{Binding EbayItems}"
-				  CanUserResizeColumns="True"
-				  CanUserReorderColumns="True"
-				  CanUserSortColumns="True"
-				  Grid.Row="0"
-				  Grid.Column="0"
-				  MaxHeight="350" />
+		<StackPanel>
+			<DataGrid ItemsSource="{Binding EbayItems}"
+					  CanUserResizeColumns="True"
+					  CanUserReorderColumns="True"
+					  CanUserSortColumns="True"
+					  Grid.Row="0"
+					  Grid.Column="0"
+					  MaxHeight="350"
+					  AutoGenerateColumns="False">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Id"
+										Binding="{Binding Id}" />
+					<DataGridTextColumn Header="Title"
+										Binding="{Binding Title}" />
+					<DataGridTextColumn Header="Quantity"
+										Binding="{Binding Quantity}" />
+					<DataGridTextColumn Header="SKU"
+										Binding="{Binding SKU}" />
+					<DataGridTextColumn Header="Category"
+										Binding="{Binding Category}" />
+					<DataGridTextColumn Header="Price"
+										Binding="{Binding Price}" />
+				</DataGrid.Columns>
+			</DataGrid>
+			<Button Content="Sync products"
+					Command="{Binding SyncProducts}" />
+		</StackPanel>
 
 		<Border Grid.RowSpan="3"
 				Grid.ColumnSpan="3"

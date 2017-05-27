@@ -44,5 +44,10 @@ namespace Ebay2Magento.ApplicationFramework.Services
 		{
 			return await _client.DeleteAsync(requestUri, ct);
 		}
+
+		public async Task<HttpResponseMessage> Put(CancellationToken ct, string requestUri, HttpContent content)
+		{
+			return await _client.PutAsync(requestUri, content, ct);
+		}
 	}
 }

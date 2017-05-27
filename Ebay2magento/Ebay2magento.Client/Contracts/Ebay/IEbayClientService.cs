@@ -15,5 +15,7 @@ namespace Ebay2Magento.Client.Contracts.Ebay
 		Task<ItemTypeCollection> GetSellerListIDs(CancellationToken ct, EbayContext context);
 
 		Task<StoreCustomCategoryTypeCollection> GetCategories(CancellationToken ct, EbayContext context);
+
+		Task<string> GetItemDescription(CancellationToken ct, EbayContext context, string ItemID);
 	}
 }

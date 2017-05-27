@@ -9,6 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using eBay.Service.Core.Soap;
 using System.Linq;
+using Ebay2Magento.Presentation.Entities;
+using Ebay2Magento.Business.Extensions;
 
 namespace Ebay2Magento.Business.Services
 {
@@ -16,6 +18,8 @@ namespace Ebay2Magento.Business.Services
 	{
 		private Func<IMagentoClientService> _magentoService;
 		private Func<ISettingsService> _settingsService;
+
+		private CategoryData _localCategories;
 
 		public MagentoService(Func<IMagentoClientService> ebayService, Func<ISettingsService> settingsService)
 		{
@@ -38,7 +42,7 @@ namespace Ebay2Magento.Business.Services
 			var token = _settingsService().GetValue<string>(Constants.Settings.MagentoToken);
 			var url = _settingsService().GetValue<string>(Constants.Settings.MagentoUrl);
 
-			return await _magentoService().GetCategories(ct, url, token);
+			return _localCategories = await _magentoService().GetCategories(ct, url, token);
 		}
 
 		public async Task<CategoryData> CreateCategory(CancellationToken ct, string name, CategoryData parent)
@@ -55,6 +59,47 @@ namespace Ebay2Magento.Business.Services
 			};
 
 			return await _magentoService().CreateCategory(ct, url, token, outbound);
+		}
+
+		public async Task CreateProduct(CancellationToken ct, StoreItem product)
+		{
+			var token = _settingsService().GetValue<string>(Constants.Settings.MagentoToken);
+			var url = _settingsService().GetValue<string>(Constants.Settings.MagentoUrl);
+
+			var categories = _localCategories ?? await GetCategories(ct);
+
+			var targetCategory = product.FindMagentoCategory(categories);
+
+			var outbound = new ProductOutboundData()
+			{
+				AttributeSetId = 4,
+				Name = product.Title,
+				Price = product.Price,
+				SKU = product.SKU,
+				CustomAttributes = new CustomAttributes[]
+				{
+					new CustomAttributes()
+					{
+						AttributeCode = "category_ids",
+						Value = targetCategory.Id.ToString()
+					},
+					new CustomAttributes()
+					{
+						AttributeCode = "description",
+						Value = product.Description
+					}
+				},
+				ExtensionAttributes = new ExtensionAttributes()
+				{
+					StockItem = new StockItem()
+					{
+						IsInStock = true,
+						Qty = product.Quantity
+					}
+				}
+			};
+
+			await _magentoService().CreateProduct(ct, url, token, outbound);
 		}
 
 		public async Task DeleteCategory(CancellationToken ct, string categoryId)

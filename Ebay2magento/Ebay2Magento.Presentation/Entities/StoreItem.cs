@@ -6,7 +6,7 @@ using System.Text;
 namespace Ebay2Magento.Presentation.Entities
 {
 	[Bindable(true)]
-	public class EbayItem
+	public class StoreItem
 	{
 		public string Id { get; set; }
 
@@ -17,5 +17,9 @@ namespace Ebay2Magento.Presentation.Entities
 		public string SKU { get; set; }
 
 		public string Category { get; set; }
+
+		public double Price { get; set; }
+
+		public string Description { get; set; }
 	}
 }

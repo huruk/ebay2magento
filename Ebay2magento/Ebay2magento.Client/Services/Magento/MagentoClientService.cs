@@ -58,6 +58,17 @@ namespace Ebay2magento.Client.Services.Magento
 			return null;
 		}
 
+		public async Task CreateProduct(CancellationToken ct, string url, string bearerToken, ProductOutboundData product)
+		{
+			var obj = new { product = product };
+
+			var httpContent = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
+
+			await _queryService()
+				.Header("Authorization", "Bearer " + bearerToken)
+				.Post(ct, url + "/index.php/rest/V1/products", httpContent);
+		}
+
 		public async Task DeleteCategory(CancellationToken ct, string url, string categoryId, string bearerToken)
 		{
 			await _queryService()

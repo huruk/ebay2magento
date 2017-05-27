@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Ebay\ITurboListerClientService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\ApplicationTokenData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\CategoryData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entities\Outbound\ProductOutboundData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Outbound\CategoryOutboundData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\TokenData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\UserTokenData.cs" />

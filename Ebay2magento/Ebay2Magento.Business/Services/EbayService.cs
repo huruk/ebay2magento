@@ -133,6 +133,13 @@ namespace Ebay2Magento.Business.Services
 			if (_localItems == null)
 			{
 				var items = await _ebayService().GetSellerListIDs(ct, Context);
+
+				foreach (var item in items.ToArray())
+				{
+					var description = await _ebayService().GetItemDescription(ct, Context, item.ItemID);
+					item.Description = description;
+				}
+
 				return _localItems = items.ToArray();
 			}
 

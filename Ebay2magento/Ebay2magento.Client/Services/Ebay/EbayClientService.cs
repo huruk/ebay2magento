@@ -145,6 +145,31 @@ namespace Ebay2Magento.Client.Services.Ebay
 			return call.Store.CustomCategories;
 		}
 
+		public async Task<string> GetItemDescription(CancellationToken ct, EbayContext context, string ItemID)
+		{
+			var apiContext = new ApiContext()
+			{
+				ApiCredential = new ApiCredential()
+				{
+					ApiAccount = new ApiAccount()
+					{
+						Application = context.AppID,
+						Certificate = context.CertID,
+						Developer = context.DevID
+					},
+					eBayToken = context.Token
+				}
+			};
+
+			var call = new GetItemCall(apiContext);
+			call.DetailLevelList = new DetailLevelCodeTypeCollection() { DetailLevelCodeType.ItemReturnDescription };
+			call.ItemID = ItemID;
+
+			await Task.Run(() => call.Execute(), ct);
+
+			return call.Item.Description;
+		}
+
 		public async Task<ItemTypeCollection> GetSellerListIDs(CancellationToken ct, EbayContext context)
 		{
 			var items = new ItemTypeCollection();
@@ -164,12 +189,13 @@ namespace Ebay2Magento.Client.Services.Ebay
 			};
 
 			var call = new GetSellerListCall(apiContext);
-			call.DetailLevelList = new DetailLevelCodeTypeCollection(new DetailLevelCodeType[] { DetailLevelCodeType.ReturnAll });
+
+			call.GranularityLevel = GranularityLevelCodeType.Fine;
 			call.EndTimeFrom = DateTime.Today;
 			call.EndTimeTo = DateTime.Today.AddDays(120);
 			call.Pagination = new PaginationType()
 			{
-				EntriesPerPage = 5,
+				EntriesPerPage = 20,
 				PageNumber = 1
 			};
 

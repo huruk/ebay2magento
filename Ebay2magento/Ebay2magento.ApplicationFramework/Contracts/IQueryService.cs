@@ -14,5 +14,7 @@ namespace Ebay2Magento.ApplicationFramework.Contracts
 		Task<HttpResponseMessage> Post(CancellationToken ct, string requestUri, HttpContent content);
 
 		Task<HttpResponseMessage> Delete(CancellationToken ct, string requestUri);
+
+		Task<HttpResponseMessage> Put(CancellationToken ct, string requestUri, HttpContent content);
 	}
 }
